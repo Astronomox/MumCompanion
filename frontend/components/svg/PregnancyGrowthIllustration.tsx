@@ -1,248 +1,103 @@
 "use client"
 
-/**
- * Hero illustration for the SIGNUP page.
- * Composition: stylized pregnant woman in profile with a luminous belly,
- * surrounded by sprouting seedlings and a warm crescent sun.
- * Different from the login illustration so both pages feel distinct.
- */
 export function PregnancyGrowthIllustration({ className = "" }: { className?: string }) {
   return (
-    <svg
-      viewBox="0 0 600 800"
-      xmlns="http://www.w3.org/2000/svg"
-      className={className}
-      aria-hidden="true"
-    >
+    <svg viewBox="0 0 480 640" xmlns="http://www.w3.org/2000/svg" className={className} aria-hidden="true">
       <defs>
-        <radialGradient id="moonGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#FFE3C2" stopOpacity="0.9" />
-          <stop offset="60%" stopColor="#F2A65A" stopOpacity="0.4" />
-          <stop offset="100%" stopColor="#D95E2A" stopOpacity="0" />
+        <linearGradient id="pg-bg" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stopColor="#FDF5EB"/>
+          <stop offset="100%" stopColor="#FAE8D0"/>
+        </linearGradient>
+        <radialGradient id="pg-sun" cx="65%" cy="22%" r="38%">
+          <stop offset="0%" stopColor="#FFE0A0" stopOpacity="0.9"/>
+          <stop offset="55%" stopColor="#F2A050" stopOpacity="0.45"/>
+          <stop offset="100%" stopColor="#F2A050" stopOpacity="0"/>
         </radialGradient>
-
-        <radialGradient id="bellyGlowGrad" cx="50%" cy="50%" r="50%">
-          <stop offset="0%" stopColor="#FFE3C2" stopOpacity="0.85" />
-          <stop offset="100%" stopColor="#FFE3C2" stopOpacity="0" />
+        <radialGradient id="pg-belly" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#FFE8C0" stopOpacity="0.9"/>
+          <stop offset="70%" stopColor="#FFD898" stopOpacity="0.4"/>
+          <stop offset="100%" stopColor="#FFD898" stopOpacity="0"/>
         </radialGradient>
-
-        <linearGradient id="profileSkin" x1="0%" y1="0%" x2="0%" y2="100%">
-          <stop offset="0%" stopColor="#6D2B1A" />
-          <stop offset="100%" stopColor="#3A170B" />
+        <linearGradient id="pg-dress" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#D85220"/>
+          <stop offset="100%" stopColor="#9E3010"/>
         </linearGradient>
-
-        <linearGradient id="profileDress" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#D95E2A" />
-          <stop offset="100%" stopColor="#9E381B" />
+        <linearGradient id="pg-gele" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stopColor="#3A7828"/>
+          <stop offset="100%" stopColor="#1E4814"/>
         </linearGradient>
-
-        <linearGradient id="profileGele" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stopColor="#3D8240" />
-          <stop offset="100%" stopColor="#214525" />
-        </linearGradient>
-
-        <linearGradient id="sproutGrad" x1="0%" y1="100%" x2="0%" y2="0%">
-          <stop offset="0%" stopColor="#5FA35F" />
-          <stop offset="100%" stopColor="#8EC38E" />
+        <linearGradient id="pg-plant" x1="0" y1="1" x2="0" y2="0">
+          <stop offset="0%" stopColor="#4A8830"/>
+          <stop offset="100%" stopColor="#88C858"/>
         </linearGradient>
       </defs>
-
-      {/* Cream base background */}
-      <rect width="600" height="800" fill="#FAF3D7" />
-
-      {/* Soft warm wash */}
-      <rect width="600" height="800" fill="#FDF3EF" opacity="0.5" />
-
-      {/* Decorative concentric circles top */}
-      <g opacity="0.18" stroke="#D95E2A" fill="none" strokeWidth="1.2">
-        <circle cx="430" cy="180" r="200" />
-        <circle cx="430" cy="180" r="160" />
-        <circle cx="430" cy="180" r="120" />
-        <circle cx="430" cy="180" r="80" />
-        <circle cx="430" cy="180" r="40" />
+      <rect width="480" height="640" fill="url(#pg-bg)"/>
+      <circle cx="390" cy="120" r="180" fill="url(#pg-sun)"/>
+      <circle cx="390" cy="120" r="80" stroke="#F2A050" strokeWidth="1" fill="none" opacity="0.3"/>
+      <circle cx="390" cy="120" r="110" stroke="#F2A050" strokeWidth="0.8" fill="none" opacity="0.2"/>
+      <circle cx="390" cy="120" r="140" stroke="#F2A050" strokeWidth="0.5" fill="none" opacity="0.15"/>
+      <g opacity="0.12" stroke="#D85220" strokeWidth="0.8" fill="none">
+        <path d="M60 80 L80 100 L60 120 L40 100 Z"/>
+        <path d="M100 80 L120 100 L100 120 L80 100 Z"/>
+        <path d="M60 160 L80 180 L60 200 L40 180 Z"/>
+        <path d="M420 300 L440 320 L420 340 L400 320 Z"/>
+        <path d="M420 360 L440 380 L420 400 L400 380 Z"/>
       </g>
-
-      {/* Warm sun glow */}
-      <circle cx="430" cy="180" r="160" fill="url(#moonGrad)" />
-
-      {/* Crescent shape */}
-      <path
-        d="M 430 60
-           A 120 120 0 1 0 430 300
-           A 90 120 0 1 1 430 60 Z"
-        fill="#E57C4D"
-        opacity="0.55"
-      />
-
-      {/* Horizontal terracotta pattern lines (textile motif) */}
-      <g opacity="0.3" stroke="#D95E2A" strokeWidth="1">
-        <line x1="60" y1="120" x2="240" y2="120" />
-        <line x1="60" y1="135" x2="220" y2="135" />
-        <line x1="60" y1="150" x2="200" y2="150" />
-      </g>
-
-      {/* Bottom geometric pattern */}
-      <g transform="translate(0 720)" opacity="0.35">
-        <pattern id="diamondPattern" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
-          <path d="M 20 5 L 35 20 L 20 35 L 5 20 Z" fill="none" stroke="#D95E2A" strokeWidth="1" />
-        </pattern>
-        <rect x="0" y="0" width="600" height="80" fill="url(#diamondPattern)" />
-      </g>
-
-      {/* Sprouting plants on left side */}
-      <g transform="translate(80 580)">
-        {/* Stem 1 */}
-        <path
-          d="M 0 100 Q 5 50 0 0"
-          stroke="url(#sproutGrad)"
-          strokeWidth="3"
-          fill="none"
-          strokeLinecap="round"
-        />
-        <path d="M 0 30 Q -25 25 -30 10 Q -20 15 0 25" fill="url(#sproutGrad)" />
-        <path d="M 0 50 Q 25 45 30 30 Q 20 35 0 45" fill="url(#sproutGrad)" />
-
-        {/* Stem 2 */}
-        <g transform="translate(35 20)">
-          <path
-            d="M 0 80 Q 8 40 0 0"
-            stroke="url(#sproutGrad)"
-            strokeWidth="2.5"
-            fill="none"
-            strokeLinecap="round"
-          />
-          <path d="M 0 25 Q -20 20 -24 8 Q -16 13 0 20" fill="url(#sproutGrad)" />
-        </g>
-
-        {/* Stem 3 */}
-        <g transform="translate(-30 30)">
-          <path
-            d="M 0 70 Q -4 35 0 0"
-            stroke="url(#sproutGrad)"
-            strokeWidth="2"
-            fill="none"
-            strokeLinecap="round"
-          />
-          <path d="M 0 20 Q 18 18 22 6 Q 14 12 0 16" fill="url(#sproutGrad)" />
-        </g>
-      </g>
-
-      {/* MAIN FIGURE: Pregnant woman in profile */}
-      <g transform="translate(290 440)">
-
-        {/* Dress body with pregnancy curve */}
-        <path
-          d="M -30 -50
-             L -40 0
-             Q -90 20 -100 90
-             Q -95 140 -75 170
-             L -80 280
-             L 60 280
-             L 50 170
-             Q 30 140 25 90
-             L 20 -50
-             Z"
-          fill="url(#profileDress)"
-        />
-
-        {/* Dress textile stripes */}
-        <g opacity="0.3" stroke="#FFD9A8" strokeWidth="1.5" fill="none">
-          <path d="M -78 200 Q 0 195 55 200" />
-          <path d="M -77 230 Q 0 225 53 230" />
-          <path d="M -76 260 Q 0 255 52 260" />
-        </g>
-
-        {/* Belly glow (life inside) */}
-        <ellipse cx="-55" cy="80" rx="40" ry="50" fill="url(#bellyGlowGrad)" opacity="0.9" />
-        <circle cx="-55" cy="80" r="6" fill="#FFE3C2" opacity="0.8" />
-
-        {/* Arm cradling belly */}
-        <path
-          d="M -30 30
-             Q -90 50 -95 100
-             Q -90 130 -70 130
-             Q -55 125 -45 100
-             Q -40 60 -25 50 Z"
-          fill="url(#profileSkin)"
-        />
-
-        {/* Hand on belly (simplified) */}
-        <ellipse cx="-80" cy="115" rx="14" ry="10" fill="url(#profileSkin)" transform="rotate(-20 -80 115)" />
-
-        {/* Neck */}
-        <path d="M 5 -50 L 5 -85 L 25 -85 L 25 -50 Z" fill="url(#profileSkin)" />
-
-        {/* Head (profile) */}
-        <path
-          d="M 15 -160
-             Q 50 -160 55 -120
-             Q 58 -90 45 -85
-             L 25 -85
-             Q 0 -90 0 -120
-             Q 0 -160 15 -160 Z"
-          fill="url(#profileSkin)"
-        />
-
-        {/* Eye */}
-        <ellipse cx="38" cy="-125" rx="3" ry="2" fill="#1C3920" />
-
-        {/* Nose hint */}
-        <path d="M 50 -120 L 56 -115 L 50 -110" stroke="#3A170B" strokeWidth="1" fill="none" />
-
-        {/* Lips hint */}
-        <path d="M 48 -100 L 53 -100" stroke="#6D2B1A" strokeWidth="2" />
-
-        {/* Ear hint */}
-        <circle cx="20" cy="-115" r="3" fill="#3A170B" />
-
-        {/* Gele (headwrap, profile) - tall and stylized */}
-        <path
-          d="M -5 -155
-             Q -25 -200 0 -225
-             Q 30 -245 60 -225
-             Q 75 -210 70 -185
-             Q 65 -165 55 -160
-             Q 30 -155 -5 -155 Z"
-          fill="url(#profileGele)"
-        />
-
-        {/* Gele wrap detail */}
-        <path
-          d="M 0 -185 Q 30 -210 60 -200"
-          stroke="#FFD9A8"
-          strokeWidth="2"
-          fill="none"
-          opacity="0.4"
-        />
-        <path
-          d="M -2 -170 Q 30 -180 65 -175"
-          stroke="#1C3920"
-          strokeWidth="1.5"
-          fill="none"
-          opacity="0.5"
-        />
-
-        {/* Earring */}
-        <circle cx="20" cy="-105" r="2" fill="#FFD9A8" />
-      </g>
-
-      {/* Floating particles */}
-      <g fill="#D95E2A">
-        <circle cx="100" cy="250" r="2.5" opacity="0.5" />
-        <circle cx="520" cy="450" r="3" opacity="0.6" />
-        <circle cx="60" cy="450" r="2" opacity="0.4" />
-        <circle cx="540" cy="320" r="2.5" opacity="0.5" />
-        <circle cx="150" cy="350" r="1.5" opacity="0.4" />
-        <circle cx="180" cy="170" r="2" opacity="0.5" />
-        <circle cx="500" cy="600" r="2.5" opacity="0.5" />
-      </g>
-
-      <g fill="#3D8240" opacity="0.4">
-        <circle cx="450" cy="500" r="3" />
-        <circle cx="120" cy="400" r="2" />
-        <circle cx="540" cy="700" r="2.5" />
-        <circle cx="80" cy="700" r="2" />
-      </g>
+      <path d="M148 560 Q148 480 144 420 Q140 380 136 340" stroke="url(#pg-plant)" strokeWidth="3.5" fill="none" strokeLinecap="round"/>
+      <path d="M144 430 Q120 415 112 398 Q120 395 134 412 Z" fill="#5AAA38" opacity="0.85"/>
+      <path d="M144 430 Q168 415 176 398 Q168 395 154 412 Z" fill="#6AC048" opacity="0.85"/>
+      <path d="M140 470 Q115 455 107 436 Q116 434 130 452 Z" fill="#5AAA38" opacity="0.8"/>
+      <path d="M140 470 Q165 455 173 436 Q164 434 150 452 Z" fill="#6AC048" opacity="0.8"/>
+      <path d="M138 510 Q116 497 110 480 Q118 477 132 492 Z" fill="#4A9A28" opacity="0.75"/>
+      <path d="M138 510 Q160 497 166 480 Q158 477 144 492 Z" fill="#5AAA38" opacity="0.75"/>
+      <path d="M75 560 Q76 510 74 468 Q72 440 70 415" stroke="url(#pg-plant)" strokeWidth="2.5" fill="none" strokeLinecap="round"/>
+      <path d="M73 445 Q55 432 50 420 Q57 418 68 432 Z" fill="#5AAA38" opacity="0.8"/>
+      <path d="M73 445 Q91 432 96 420 Q89 418 78 432 Z" fill="#6AC048" opacity="0.8"/>
+      <path d="M72 478 Q55 467 50 455 Q57 453 68 465 Z" fill="#4A9A28" opacity="0.75"/>
+      <path d="M72 478 Q89 467 94 455 Q87 453 76 465 Z" fill="#5AAA38" opacity="0.75"/>
+      <path d="M370 560 Q370 510 372 466 Q374 438 376 408" stroke="url(#pg-plant)" strokeWidth="3" fill="none" strokeLinecap="round"/>
+      <path d="M373 438 Q352 424 347 410 Q355 408 368 422 Z" fill="#5AAA38" opacity="0.8"/>
+      <path d="M373 438 Q394 424 399 410 Q391 408 378 422 Z" fill="#6AC048" opacity="0.8"/>
+      <path d="M372 475 Q352 462 347 448 Q355 446 368 460 Z" fill="#4A9A28" opacity="0.75"/>
+      <path d="M372 475 Q392 462 397 448 Q389 446 376 460 Z" fill="#5AAA38" opacity="0.75"/>
+      <path d="M372 512 Q354 500 350 488 Q357 486 370 498 Z" fill="#4A9A28" opacity="0.7"/>
+      <path d="M372 512 Q390 500 394 488 Q387 486 374 498 Z" fill="#5AAA38" opacity="0.7"/>
+      <path d="M248 295 L238 310 Q210 330 200 380 Q195 420 200 480 L290 480 Q298 420 296 380 Q294 340 290 310 L278 295 Z" fill="url(#pg-dress)"/>
+      <path d="M200 350 Q180 370 178 400 Q180 428 200 440 Q218 448 228 435 Q232 418 230 395 Q228 368 210 350 Z" fill="#C84810"/>
+      <ellipse cx="202" cy="393" rx="28" ry="35" fill="url(#pg-belly)" opacity="0.85"/>
+      <circle cx="200" cy="393" r="7" fill="#FFE0A0" opacity="0.7"/>
+      <path d="M202 370 Q246 364 294 372" stroke="#F5A070" strokeWidth="1.2" fill="none" opacity="0.4"/>
+      <path d="M200 400 Q245 394 296 403" stroke="#F5A070" strokeWidth="1.2" fill="none" opacity="0.4"/>
+      <path d="M200 432 Q245 426 296 435" stroke="#F5A070" strokeWidth="1.2" fill="none" opacity="0.35"/>
+      <path d="M200 462 Q245 456 296 465" stroke="#F5A070" strokeWidth="1" fill="none" opacity="0.3"/>
+      <path d="M250 380 L255 386 L250 392 L245 386 Z" fill="#F5B080" opacity="0.5"/>
+      <path d="M268 380 L273 386 L268 392 L263 386 Z" fill="#F5B080" opacity="0.5"/>
+      <path d="M248 300 Q228 320 220 360 Q218 385 228 400 Q238 408 248 398 Q256 380 256 350 L256 305 Z" fill="#7A3518"/>
+      <ellipse cx="228" cy="402" rx="16" ry="11" fill="#7A3518" transform="rotate(-25 228 402)"/>
+      <path d="M218 398 Q224 408 232 408" stroke="#5A2010" strokeWidth="1" fill="none" opacity="0.5"/>
+      <rect x="254" y="272" width="18" height="28" rx="4" fill="#7A3518"/>
+      <ellipse cx="270" cy="248" rx="30" ry="34" fill="#7A3518"/>
+      <ellipse cx="278" cy="244" rx="3" ry="3.5" fill="#1E0804"/>
+      <ellipse cx="280" cy="243" rx="1" ry="1" fill="#FFFFFF" opacity="0.5"/>
+      <path d="M274 237 Q280 234 286 237" stroke="#4A1808" strokeWidth="1.8" fill="none" strokeLinecap="round"/>
+      <path d="M284 250 Q288 256 286 262 Q283 264 280 262" stroke="#5A2010" strokeWidth="1.2" fill="none"/>
+      <path d="M279 268 Q284 272 289 268" stroke="#8A3018" strokeWidth="2" fill="none" strokeLinecap="round"/>
+      <path d="M256 272 Q265 278 270 280" stroke="#5A2010" strokeWidth="1" fill="none" opacity="0.4"/>
+      <ellipse cx="242" cy="252" rx="5" ry="7" fill="#6A2E14"/>
+      <circle cx="242" cy="260" r="5" fill="#E06828"/>
+      <circle cx="242" cy="260" r="2.5" fill="#F5C840"/>
+      <path d="M243 230 Q244 208 270 200 Q296 208 297 230 Q294 218 270 214 Q246 218 243 230 Z" fill="#2A5E18"/>
+      <path d="M246 228 Q244 200 256 176 Q264 158 270 146 Q276 158 284 176 Q296 200 294 228 Z" fill="#3A7828"/>
+      <path d="M243 230 Q226 218 222 202 Q224 186 243 192 Q246 206 244 228 Z" fill="#2A5E18"/>
+      <path d="M258 180 Q270 162 282 180" stroke="#6AAA50" strokeWidth="2.5" fill="none" opacity="0.6"/>
+      <path d="M252 204 Q270 192 288 204" stroke="#4A8838" strokeWidth="2" fill="none" opacity="0.5"/>
+      <path d="M264 148 Q270 133 276 148 Q273 153 270 158 Q267 153 264 148 Z" fill="#2A5E18"/>
+      <circle cx="50" cy="200" r="3" fill="#F5C840" opacity="0.5"/>
+      <circle cx="440" cy="240" r="3.5" fill="#D85220" opacity="0.45"/>
+      <circle cx="80" cy="360" r="2" fill="#6AAA50" opacity="0.5"/>
+      <circle cx="430" cy="550" r="2.5" fill="#F5C840" opacity="0.45"/>
+      <circle cx="200" cy="160" r="2" fill="#D85220" opacity="0.4"/>
+      <circle cx="420" cy="460" r="2" fill="#6AAA50" opacity="0.45"/>
     </svg>
   )
 }
