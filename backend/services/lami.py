@@ -47,7 +47,7 @@ to call her emergency contact, or get to a hospital immediately. Short sentences
 
 def _build_messages(messages, name, stage, week, baby_name, urgent=False):
     bits = []
-    if name and name != "Mama":
+    if name and name != "Mama" and name != "nne":
         bits.append(f"Her name is {name}.")
     if week:
         bits.append(f"She is {week} weeks pregnant ({stage.replace('_', ' ')}).")

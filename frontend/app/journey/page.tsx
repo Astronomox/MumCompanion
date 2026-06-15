@@ -23,7 +23,7 @@ function Section({ title, items, accent }: { title: string; items: string[]; acc
       <h3 className="font-semibold text-stone-800 mb-2">{title}</h3>
       <ul className="space-y-1.5">
         {items.map((item, i) => (
-          <li key={i} className="text-sm text-stone-600 flex gap-2"><span className="shrink-0 mt-0.5 text-forest-400">|</span>{item}</li>
+          <li key={i} className="text-sm text-stone-600 flex gap-2"><span className="shrink-0 mt-0.5 text-forest-400">·</span>{item}</li>
         ))}
       </ul>
     </div>
@@ -32,11 +32,13 @@ function Section({ title, items, accent }: { title: string; items: string[]; acc
 
 export default function JourneyPage() {
   const { user } = useAppStore()
-  const [week, setWeek] = useState(user?.week || 16)
+  const initialWeek = user?.week && user.week > 0 ? user.week : 0
+  const [week, setWeek] = useState(initialWeek)
   const [content, setContent] = useState<WeekContent | null>(null)
   const [loading, setLoading] = useState(false)
 
   useEffect(() => {
+    if (!week || week < 1) return
     let cancelled = false
     setLoading(true)
     getWeekContent(week, "pregnancy")
@@ -46,10 +48,39 @@ export default function JourneyPage() {
     return () => { cancelled = true }
   }, [week])
 
+  // No week set yet - prompt her to update settings
+  if (!week || week < 1) {
+    return (
+      <div className="min-h-dvh bg-cream-50 pb-24">
+        <header className="bg-white border-b border-stone-100 px-4 py-4 pt-safe">
+          <h1 className="font-display font-bold text-xl text-stone-800">Your Journey{user?.name ? `, ${user.name}` : ""}</h1>
+          <p className="text-sm text-stone-500 mt-0.5">Week by week, together</p>
+        </header>
+        <div className="px-4 pt-12 text-center">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-forest-100 flex items-center justify-center">
+            <svg viewBox="0 0 24 24" fill="none" className="w-8 h-8 text-forest-600">
+              <rect x="4" y="5" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.7"/>
+              <path d="M4 10H20M8 3V7M16 3V7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
+            </svg>
+          </div>
+          <h2 className="font-display font-bold text-lg text-stone-800 mb-2">First, tell me your week</h2>
+          <p className="text-sm text-stone-500 mb-6 max-w-xs mx-auto leading-relaxed">
+            I cannot guide you week by week if I do not know how far along you are. Tap below to set your week.
+          </p>
+          <button onClick={() => window.location.href = "/profile"}
+            className="bg-forest-600 hover:bg-forest-700 text-white font-semibold rounded-2xl px-6 py-3 text-sm transition-colors">
+            Open Settings
+          </button>
+        </div>
+        <BottomNav />
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-dvh bg-cream-50 pb-24">
       <header className="bg-white border-b border-stone-100 px-4 py-4 pt-safe">
-        <h1 className="font-display font-bold text-xl text-stone-800">Your Journey</h1>
+        <h1 className="font-display font-bold text-xl text-stone-800">Your Journey{user?.name ? `, ${user.name}` : ""}</h1>
         <p className="text-sm text-stone-500 mt-0.5">Week by week, together</p>
       </header>
 

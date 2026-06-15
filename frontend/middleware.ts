@@ -1,7 +1,7 @@
 import { createServerClient, type CookieOptions } from "@supabase/ssr"
 import { NextResponse, type NextRequest } from "next/server"
 
-const PROTECTED_PREFIXES = ["/chat", "/journey", "/move", "/scan", "/profile", "/onboarding", "/emergency"]
+const PROTECTED_PREFIXES = ["/chat", "/journey", "/move", "/scan", "/profile", "/emergency"]
 const AUTH_PAGES = ["/login", "/signup"]
 
 export async function middleware(request: NextRequest) {
@@ -30,18 +30,33 @@ export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname
   const isProtected = PROTECTED_PREFIXES.some((p) => path.startsWith(p))
   const isAuthPage = AUTH_PAGES.includes(path)
+  const isOnboarding = path.startsWith("/onboarding")
 
-  if (isProtected && !user) {
+  // Not logged in trying to reach protected page or onboarding
+  if ((isProtected || isOnboarding) && !user) {
     const u = request.nextUrl.clone()
     u.pathname = "/login"
     u.searchParams.set("next", path)
     return NextResponse.redirect(u)
   }
+
+  // Logged in on auth page - go straight to chat
   if (isAuthPage && user) {
     const u = request.nextUrl.clone()
     u.pathname = "/chat"
     return NextResponse.redirect(u)
   }
+
+  // Logged in but no profile completed - force onboarding
+  if (isProtected && user) {
+    const onboardedCookie = request.cookies.get("lami-onboarded")
+    if (!onboardedCookie || onboardedCookie.value !== "1") {
+      const u = request.nextUrl.clone()
+      u.pathname = "/onboarding"
+      return NextResponse.redirect(u)
+    }
+  }
+
   return response
 }
 
