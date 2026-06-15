@@ -1,9 +1,1 @@
-{
-  "framework": "nextjs",
-  "rootDirectory": "frontend",
-  "buildCommand": "npm run build",
-  "outputDirectory": ".next",
-  "env": {
-    "NEXT_PUBLIC_API_URL": "https://mum-companion-api.onrender.com"
-  }
-}
+{ "buildCommand": "pnpm install && pnpm build", "outputDirectory": ".next", "framework": "nextjs", "installCommand": "pnpm install" } 
