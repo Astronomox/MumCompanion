@@ -12,7 +12,6 @@ interface Exercise {
   benefit: string
   safeFor: string
   steps: string[]
-  animation: "pelvic-tilt" | "cat-cow" | "ankle-circle" | "breathing" | "neck-roll"
 }
 
 const EXERCISES: Exercise[] = [
@@ -20,212 +19,447 @@ const EXERCISES: Exercise[] = [
     id: "pelvic-tilt",
     name: "Pelvic Tilts",
     duration: "2 minutes",
-    benefit: "Eases lower back pain and strengthens your core gently",
+    benefit: "Eases lower back pain and gently strengthens your core. Safe every single day.",
     safeFor: "All trimesters",
-    animation: "pelvic-tilt",
     steps: [
-      "Stand with your back against a wall, feet shoulder-width apart",
-      "Breathe in slowly through your nose",
-      "As you breathe out, gently press your lower back into the wall",
-      "Hold for 4 seconds, then release",
-      "Repeat 10 times, slow and steady",
+      "Stand with your back flat against a wall, feet shoulder-width apart.",
+      "Breathe in slowly through your nose. Feel your belly gently rise.",
+      "As you breathe out, press your lower back into the wall. Pelvis tilts forward slightly.",
+      "Hold for 4 slow counts. Feel the stretch open along your lower spine.",
+      "Release and return to neutral. Repeat 10 times with your breath.",
     ],
   },
   {
     id: "cat-cow",
     name: "Cat and Cow Stretch",
     duration: "3 minutes",
-    benefit: "Relieves back tension and makes room for baby",
+    benefit: "Relieves back tension and creates space for baby. Deeply soothing.",
     safeFor: "First and second trimester",
-    animation: "cat-cow",
     steps: [
-      "Get on your hands and knees, wrists under shoulders",
-      "Breathe in, drop your belly gently and look up (cow)",
-      "Breathe out, round your back up toward the ceiling (cat)",
-      "Move slowly between the two with your breath",
-      "Repeat 8 to 10 times",
+      "Get on your hands and knees on a soft surface. Wrists under shoulders.",
+      "Breathe in and let your belly drop toward the floor, look gently upward (cow).",
+      "Breathe out and round your back toward the ceiling, chin to chest (cat).",
+      "Move slowly between both shapes, following your breath.",
+      "Repeat 8 to 10 times. Never force the movement.",
     ],
   },
   {
     id: "ankle-circle",
     name: "Ankle Circles",
     duration: "2 minutes",
-    benefit: "Reduces swelling in your feet and ankles",
+    benefit: "Reduces swelling in your feet and ankles. Works well in the third trimester.",
     safeFor: "All trimesters, great for third",
-    animation: "ankle-circle",
     steps: [
-      "Sit comfortably on a chair",
-      "Lift one foot slightly off the ground",
-      "Rotate your ankle slowly in a circle, 10 times one way",
-      "Then 10 times the other way",
-      "Switch to the other foot",
+      "Sit comfortably on a chair with good back support.",
+      "Lift your right foot slightly off the ground.",
+      "Slowly rotate your ankle in a circle — 10 times clockwise.",
+      "Then 10 times counter-clockwise. Switch to the left foot.",
+      "Do this twice a day, especially after long periods of sitting.",
     ],
   },
   {
     id: "breathing",
     name: "Calm Breathing",
     duration: "5 minutes",
-    benefit: "Lowers stress and prepares you for labour breathing",
+    benefit: "Lowers stress hormones, steadies your heart rate, and prepares you for labour breathing.",
     safeFor: "All trimesters, anytime",
-    animation: "breathing",
     steps: [
-      "Sit or lie down somewhere comfortable",
-      "Breathe in slowly through your nose for 4 counts",
-      "Hold gently for 4 counts",
-      "Breathe out slowly through your mouth for 6 counts",
-      "Follow the circle on screen and repeat for 5 minutes",
+      "Sit or lie on your left side somewhere comfortable. Close your eyes.",
+      "Breathe in slowly through your nose for 4 counts.",
+      "Hold gently for 4 counts — do not strain.",
+      "Breathe out slowly through your mouth for 6 counts.",
+      "Repeat for 5 minutes. Follow the animation on your screen.",
     ],
   },
   {
     id: "neck-roll",
-    name: "Gentle Neck Rolls",
+    name: "Neck Rolls",
     duration: "2 minutes",
-    benefit: "Releases tension from your neck and shoulders",
+    benefit: "Releases tension from your shoulders, neck, and upper back carried during pregnancy.",
     safeFor: "All trimesters",
-    animation: "neck-roll",
     steps: [
-      "Sit up tall with relaxed shoulders",
-      "Drop your chin gently toward your chest",
-      "Slowly roll your head to one side",
-      "Bring it back to center, then the other side",
-      "Repeat 5 times each direction, slow and gentle",
+      "Sit tall in a chair or cross-legged on the floor.",
+      "Drop your right ear slowly toward your right shoulder. Breathe.",
+      "Roll your chin down toward your chest, then up toward the left shoulder.",
+      "Move slowly — never force or roll your head all the way back.",
+      "Repeat 3 times each side. Stop if you feel any dizziness.",
     ],
   },
 ]
 
-function ExerciseAnimation({ type }: { type: Exercise["animation"] }) {
-  // Each animation is a simple CSS-animated figure
-  if (type === "breathing") {
-    return (
-      <div className="flex items-center justify-center h-44">
-        <div className="relative w-28 h-28 flex items-center justify-center">
-          <div className="absolute inset-0 rounded-full bg-forest-200 animate-breathe" />
-          <div className="absolute inset-4 rounded-full bg-forest-300 animate-breathe" style={{ animationDelay: "0.2s" }} />
-          <span className="relative z-10 text-forest-700 text-sm font-medium">breathe</span>
-        </div>
-      </div>
-    )
-  }
+// ---- ANIMATED FIGURES ----
 
-  if (type === "ankle-circle") {
-    return (
-      <div className="flex items-center justify-center h-44">
-        <svg viewBox="0 0 120 120" className="w-32 h-32">
-          <circle cx="60" cy="60" r="34" fill="none" stroke="#aed6b3" strokeWidth="3" strokeDasharray="4 4" />
-          <g>
-            <circle cx="60" cy="26" r="7" fill="#216330">
-              <animateTransform attributeName="transform" type="rotate" from="0 60 60" to="360 60 60" dur="3s" repeatCount="indefinite" />
-            </circle>
-          </g>
-          <rect x="54" y="70" width="12" height="30" rx="4" fill="#4e9a5b" />
-        </svg>
-      </div>
-    )
-  }
+function PelvicTiltFigure() {
+  return (
+    <svg viewBox="0 0 190 280" className="w-full h-full" style={{ maxHeight: 280 }}>
+      <defs>
+        <linearGradient id="pt1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#3a8c4a"/>
+          <stop offset="100%" stopColor="#1a4724"/>
+        </linearGradient>
+        <style>{`
+          @keyframes ptTilt { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(3.5deg)} }
+          @keyframes ptBelly { 0%,100%{transform:scale(1)} 50%{transform:scale(1.06)} }
+          @keyframes ptArmL { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(-6deg)} }
+          @keyframes ptArmR { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(6deg)} }
+          @keyframes ptNod { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(2.5deg)} }
+          @keyframes ptGlow { 0%,100%{opacity:0.06} 50%{opacity:0.18} }
+          .pt-torso { transform-origin:95px 150px; animation:ptTilt 4s ease-in-out infinite; }
+          .pt-belly { transform-origin:95px 168px; animation:ptBelly 4s ease-in-out infinite; }
+          .pt-armL { transform-origin:72px 143px; animation:ptArmL 4s ease-in-out infinite; }
+          .pt-armR { transform-origin:118px 143px; animation:ptArmR 4s ease-in-out infinite; }
+          .pt-head { transform-origin:95px 90px; animation:ptNod 4s ease-in-out infinite; }
+          .pt-glow { animation:ptGlow 4s ease-in-out infinite; }
+        `}</style>
+      </defs>
+      {/* Wall line */}
+      <line x1="22" y1="40" x2="22" y2="248" stroke="#c8d5c9" strokeWidth="2" strokeLinecap="round"/>
+      <line x1="18" y1="248" x2="172" y2="248" stroke="#c8d5c9" strokeWidth="2" strokeLinecap="round"/>
+      {/* Feet */}
+      <ellipse cx="86" cy="244" rx="11" ry="5" fill="#143820"/>
+      <ellipse cx="106" cy="244" rx="11" ry="5" fill="#143820"/>
+      {/* Legs */}
+      <rect x="78" y="198" width="16" height="46" rx="8" fill="url(#pt1)"/>
+      <rect x="96" y="198" width="16" height="46" rx="8" fill="#2a6b38"/>
+      {/* Torso group */}
+      <g className="pt-torso">
+        <ellipse cx="95" cy="198" rx="24" ry="10" fill="url(#pt1)"/>
+        <path d="M71 143 Q69 168 71 198 L119 198 Q121 168 119 143Z" fill="url(#pt1)"/>
+        {/* Belly */}
+        <g className="pt-belly">
+          <ellipse cx="95" cy="168" rx="27" ry="28" fill="#2a6b38"/>
+          <ellipse cx="95" cy="168" rx="20" ry="21" fill="#3a8c4a" opacity="0.3"/>
+          <ellipse cx="89" cy="159" rx="9" ry="8" fill="rgba(255,255,255,0.07)"/>
+        </g>
+        {/* Chest */}
+        <ellipse cx="95" cy="140" rx="21" ry="15" fill="#2a6b38"/>
+        {/* Left arm */}
+        <g className="pt-armL">
+          <ellipse cx="59" cy="149" rx="8" ry="19" fill="url(#pt1)" transform="rotate(-10 59 149)"/>
+          <ellipse cx="53" cy="166" rx="7" ry="6" fill="#216330"/>
+          <ellipse cx="49" cy="181" rx="6.5" ry="14" fill="url(#pt1)" transform="rotate(-5 49 181)"/>
+          <ellipse cx="47" cy="193" rx="6" ry="7" fill="#2a6b38"/>
+        </g>
+        {/* Right arm */}
+        <g className="pt-armR">
+          <ellipse cx="131" cy="149" rx="8" ry="19" fill="#2a6b38" transform="rotate(10 131 149)"/>
+          <ellipse cx="137" cy="166" rx="7" ry="6" fill="#2a6b38"/>
+          <ellipse cx="141" cy="181" rx="6.5" ry="14" fill="#2a6b38" transform="rotate(5 141 181)"/>
+          <ellipse cx="143" cy="193" rx="6" ry="7" fill="#3a8c4a"/>
+        </g>
+      </g>
+      {/* Neck */}
+      <ellipse cx="95" cy="122" rx="9" ry="10" fill="#2a6b38"/>
+      {/* Head */}
+      <g className="pt-head">
+        <ellipse cx="95" cy="92" rx="27" ry="29" fill="#2a6b38"/>
+        <ellipse cx="67" cy="92" rx="3" ry="8" fill="rgba(0,0,0,0.1)"/>
+        <ellipse cx="123" cy="92" rx="3" ry="8" fill="rgba(0,0,0,0.1)"/>
+        <ellipse cx="67" cy="93" rx="5" ry="7.5" fill="url(#pt1)"/>
+        <ellipse cx="123" cy="93" rx="5" ry="7.5" fill="#2a6b38"/>
+        <ellipse cx="95" cy="67" rx="30" ry="20" fill="#143820"/>
+        <ellipse cx="95" cy="65" rx="24" ry="16" fill="#1a4724"/>
+        <ellipse cx="88" cy="61" rx="13" ry="10" fill="#216330" opacity="0.4"/>
+      </g>
+      {/* Edge glow */}
+      <ellipse className="pt-glow" cx="68" cy="155" rx="3.5" ry="45" fill="rgba(78,154,91,0.07)"/>
+      <ellipse className="pt-glow" cx="122" cy="155" rx="3.5" ry="45" fill="rgba(78,154,91,0.05)" style={{ animationDelay: "0.5s" }}/>
+    </svg>
+  )
+}
 
-  if (type === "pelvic-tilt") {
-    return (
-      <div className="flex items-center justify-center h-44">
-        <svg viewBox="0 0 160 120" className="w-44 h-32">
-          <line x1="30" y1="10" x2="30" y2="110" stroke="#cedbc4" strokeWidth="4" />
-          <g>
-            <ellipse cx="70" cy="55" rx="14" ry="20" fill="#216330">
-              <animate attributeName="cx" values="70;62;70" dur="2.5s" repeatCount="indefinite" />
-            </ellipse>
-            <circle cx="70" cy="30" r="9" fill="#4e9a5b">
-              <animate attributeName="cx" values="70;62;70" dur="2.5s" repeatCount="indefinite" />
-            </circle>
-          </g>
-        </svg>
-      </div>
-    )
-  }
+function CatCowFigure() {
+  return (
+    <svg viewBox="0 0 240 200" className="w-full h-full" style={{ maxHeight: 200 }}>
+      <defs>
+        <linearGradient id="cc1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#3a8c4a"/>
+          <stop offset="100%" stopColor="#1a4724"/>
+        </linearGradient>
+        <style>{`
+          @keyframes ccSpine { 0%,100%{transform:translateY(0) scaleY(1)} 50%{transform:translateY(-6px) scaleY(0.93)} }
+          @keyframes ccHead { 0%,100%{transform:rotate(0deg)} 50%{transform:rotate(15deg)} }
+          @keyframes ccBelly { 0%,100%{transform:translateY(0)} 50%{transform:translateY(5px)} }
+          .cc-spine { transform-origin:120px 100px; animation:ccSpine 4s ease-in-out infinite; }
+          .cc-head { transform-origin:50px 90px; animation:ccHead 4s ease-in-out infinite; }
+          .cc-belly { transform-origin:120px 115px; animation:ccBelly 4s ease-in-out infinite; }
+        `}</style>
+      </defs>
+      {/* Floor */}
+      <line x1="20" y1="170" x2="220" y2="170" stroke="#c8d5c9" strokeWidth="1.5"/>
+      {/* Arms (left) */}
+      <ellipse cx="54" cy="145" rx="7" ry="28" fill="#2a6b38"/>
+      <ellipse cx="54" cy="170" rx="10" ry="5" fill="#143820"/>
+      {/* Arms (right) */}
+      <ellipse cx="186" cy="145" rx="7" ry="28" fill="#2a6b38"/>
+      <ellipse cx="186" cy="170" rx="10" ry="5" fill="#143820"/>
+      {/* Knees/legs */}
+      <ellipse cx="90" cy="158" rx="8" ry="16" fill="#2a6b38"/>
+      <ellipse cx="90" cy="170" rx="12" ry="6" fill="#143820"/>
+      <ellipse cx="150" cy="158" rx="8" ry="16" fill="#2a6b38"/>
+      <ellipse cx="150" cy="170" rx="12" ry="6" fill="#143820"/>
+      {/* Torso/spine group */}
+      <g className="cc-spine">
+        <path d="M54 115 Q90 100 120 105 Q150 100 186 115" stroke="#1a4724" strokeWidth="22" strokeLinecap="round" fill="none"/>
+        <path d="M54 115 Q90 100 120 105 Q150 100 186 115" stroke="#2a6b38" strokeWidth="16" strokeLinecap="round" fill="none"/>
+        {/* Belly */}
+        <g className="cc-belly">
+          <ellipse cx="120" cy="118" rx="22" ry="18" fill="#3a8c4a"/>
+          <ellipse cx="120" cy="118" rx="16" ry="13" fill="#4e9a5b" opacity="0.3"/>
+          <ellipse cx="114" cy="112" rx="7" ry="6" fill="rgba(255,255,255,0.07)"/>
+        </g>
+      </g>
+      {/* Head */}
+      <g className="cc-head">
+        <ellipse cx="44" cy="90" rx="22" ry="24" fill="#2a6b38"/>
+        <ellipse cx="24" cy="90" rx="4" ry="7" fill="url(#cc1)"/>
+        <ellipse cx="44" cy="68" rx="20" ry="13" fill="#143820"/>
+        <ellipse cx="40" cy="65" rx="11" ry="8" fill="#1a4724" opacity="0.5"/>
+      </g>
+      {/* Tail suggestion */}
+      <path d="M186 110 Q200 95 195 80" stroke="#2a6b38" strokeWidth="8" strokeLinecap="round" fill="none"/>
+    </svg>
+  )
+}
 
-  if (type === "cat-cow") {
-    return (
-      <div className="flex items-center justify-center h-44">
-        <svg viewBox="0 0 160 120" className="w-44 h-32">
-          <path fill="none" stroke="#216330" strokeWidth="6" strokeLinecap="round">
-            <animate attributeName="d"
-              values="M30 80 Q80 60 130 80;M30 80 Q80 100 130 80;M30 80 Q80 60 130 80"
-              dur="3s" repeatCount="indefinite" />
-          </path>
-          <circle cx="30" cy="80" r="8" fill="#4e9a5b" />
-          <rect x="124" y="80" width="10" height="24" rx="3" fill="#4e9a5b" />
-        </svg>
-      </div>
-    )
-  }
+function AnkleCircleFigure() {
+  return (
+    <svg viewBox="0 0 200 240" className="w-full h-full" style={{ maxHeight: 240 }}>
+      <defs>
+        <linearGradient id="ac1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#3a8c4a"/>
+          <stop offset="100%" stopColor="#1a4724"/>
+        </linearGradient>
+        <style>{`
+          @keyframes acFoot { 0%{transform:rotate(0deg)} 25%{transform:rotate(25deg)} 50%{transform:rotate(0deg)} 75%{transform:rotate(-25deg)} 100%{transform:rotate(0deg)} }
+          @keyframes acLeg { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-4px)} }
+          .ac-foot { transform-origin:100px 195px; animation:acFoot 3s linear infinite; }
+          .ac-leg { transform-origin:100px 160px; animation:acLeg 3s ease-in-out infinite; }
+          @keyframes acCircle { 0%{stroke-dashoffset:150} 100%{stroke-dashoffset:0} }
+          .ac-circle { stroke-dasharray:150; animation:acCircle 3s linear infinite; }
+        `}</style>
+      </defs>
+      {/* Chair */}
+      <rect x="30" y="140" width="140" height="8" rx="4" fill="#c8d5c9"/>
+      <rect x="35" y="148" width="8" height="40" rx="4" fill="#c8d5c9"/>
+      <rect x="157" y="148" width="8" height="40" rx="4" fill="#c8d5c9"/>
+      <rect x="155" y="60" width="8" height="88" rx="4" fill="#c8d5c9"/>
+      {/* Body torso */}
+      <ellipse cx="100" cy="100" rx="28" ry="35" fill="#2a6b38"/>
+      <ellipse cx="100" cy="80" rx="22" ry="16" fill="#3a8c4a" opacity="0.4"/>
+      {/* Belly */}
+      <ellipse cx="97" cy="108" rx="20" ry="18" fill="#3a8c4a"/>
+      <ellipse cx="93" cy="102" rx="7" ry="6" fill="rgba(255,255,255,0.07)"/>
+      {/* Left leg (resting) */}
+      <rect x="60" y="138" width="18" height="50" rx="9" fill="url(#ac1)"/>
+      <ellipse cx="69" cy="190" rx="12" ry="6" fill="#143820"/>
+      {/* Right leg (raised + rotating) */}
+      <g className="ac-leg">
+        <rect x="122" y="138" width="18" height="42" rx="9" fill="#2a6b38"/>
+      </g>
+      {/* Rotating foot */}
+      <g className="ac-foot">
+        <ellipse cx="131" cy="190" rx="16" ry="8" fill="#1a4724"/>
+        <ellipse cx="131" cy="190" rx="11" ry="5" fill="#143820"/>
+      </g>
+      {/* Circle trace */}
+      <circle className="ac-circle" cx="131" cy="205" r="24" fill="none" stroke="rgba(78,154,91,0.3)" strokeWidth="2" strokeLinecap="round"/>
+      {/* Head */}
+      <ellipse cx="100" cy="55" rx="25" ry="27" fill="#2a6b38"/>
+      <ellipse cx="100" cy="34" rx="22" ry="15" fill="#143820"/>
+      <ellipse cx="94" cy="30" rx="12" ry="9" fill="#1a4724" opacity="0.45"/>
+      {/* Arms resting */}
+      <ellipse cx="65" cy="112" rx="8" ry="22" fill="url(#ac1)" transform="rotate(8 65 112)"/>
+      <ellipse cx="135" cy="112" rx="8" ry="22" fill="#2a6b38" transform="rotate(-8 135 112)"/>
+    </svg>
+  )
+}
 
-  if (type === "neck-roll") {
-    return (
-      <div className="flex items-center justify-center h-44">
-        <svg viewBox="0 0 120 120" className="w-32 h-32">
-          <rect x="50" y="60" width="20" height="45" rx="6" fill="#4e9a5b" />
-          <g>
-            <circle cx="60" cy="45" r="14" fill="#216330">
-              <animateTransform attributeName="transform" type="rotate" values="-25 60 58;25 60 58;-25 60 58" dur="3s" repeatCount="indefinite" />
-            </circle>
-          </g>
-        </svg>
-      </div>
-    )
-  }
+function BreathingFigure() {
+  return (
+    <svg viewBox="0 0 200 240" className="w-full h-full" style={{ maxHeight: 240 }}>
+      <defs>
+        <style>{`
+          @keyframes brBelly { 0%,100%{transform:scale(1)} 50%{transform:scale(1.15)} }
+          @keyframes brChest { 0%,100%{transform:scaleY(1)} 50%{transform:scaleY(1.06)} }
+          @keyframes brRing1 { 0%,100%{transform:scale(0.85);opacity:0.5} 50%{transform:scale(1.15);opacity:0.1} }
+          @keyframes brRing2 { 0%,100%{transform:scale(0.8);opacity:0.35} 50%{transform:scale(1.2);opacity:0.08} }
+          @keyframes brRing3 { 0%,100%{transform:scale(0.75);opacity:0.2} 50%{transform:scale(1.25);opacity:0.05} }
+          .br-belly { transform-origin:100px 148px; animation:brBelly 4s ease-in-out infinite; }
+          .br-chest { transform-origin:100px 118px; animation:brChest 4s ease-in-out infinite; }
+          .br-r1 { transform-origin:100px 148px; animation:brRing1 4s ease-in-out infinite; }
+          .br-r2 { transform-origin:100px 148px; animation:brRing2 4s ease-in-out 0.3s infinite; }
+          .br-r3 { transform-origin:100px 148px; animation:brRing3 4s ease-in-out 0.6s infinite; }
+        `}</style>
+      </defs>
+      {/* Breathing rings */}
+      <circle className="br-r3" cx="100" cy="148" r="70" fill="none" stroke="rgba(78,154,91,0.15)" strokeWidth="1.5"/>
+      <circle className="br-r2" cx="100" cy="148" r="52" fill="none" stroke="rgba(78,154,91,0.2)" strokeWidth="1.5"/>
+      <circle className="br-r1" cx="100" cy="148" r="36" fill="none" stroke="rgba(78,154,91,0.3)" strokeWidth="1.5"/>
+      {/* Body lying/sitting */}
+      {/* Legs */}
+      <ellipse cx="82" cy="205" rx="12" ry="28" fill="#2a6b38"/>
+      <ellipse cx="82" cy="230" rx="14" ry="6" fill="#143820"/>
+      <ellipse cx="118" cy="205" rx="12" ry="28" fill="#1a4724"/>
+      <ellipse cx="118" cy="230" rx="14" ry="6" fill="#143820"/>
+      {/* Belly — big breathing */}
+      <g className="br-belly">
+        <ellipse cx="100" cy="148" rx="30" ry="32" fill="#2a6b38"/>
+        <ellipse cx="100" cy="148" rx="23" ry="25" fill="#3a8c4a" opacity="0.3"/>
+        <ellipse cx="93" cy="137" rx="10" ry="9" fill="rgba(255,255,255,0.08)"/>
+      </g>
+      {/* Chest */}
+      <g className="br-chest">
+        <ellipse cx="100" cy="118" rx="23" ry="18" fill="#2a6b38"/>
+      </g>
+      {/* Arms */}
+      <ellipse cx="66" cy="130" rx="8" ry="24" fill="#1a4724" transform="rotate(-12 66 130)"/>
+      <ellipse cx="134" cy="130" rx="8" ry="24" fill="#1a4724" transform="rotate(12 134 130)"/>
+      {/* Head */}
+      <ellipse cx="100" cy="75" rx="26" ry="28" fill="#2a6b38"/>
+      <ellipse cx="100" cy="53" rx="22" ry="15" fill="#143820"/>
+      <ellipse cx="94" cy="49" rx="12" ry="9" fill="#1a4724" opacity="0.45"/>
+      {/* Neck */}
+      <ellipse cx="100" cy="98" rx="10" ry="11" fill="#2a6b38"/>
+    </svg>
+  )
+}
 
-  return null
+function NeckRollFigure() {
+  return (
+    <svg viewBox="0 0 200 220" className="w-full h-full" style={{ maxHeight: 220 }}>
+      <defs>
+        <linearGradient id="nr1" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#3a8c4a"/>
+          <stop offset="100%" stopColor="#1a4724"/>
+        </linearGradient>
+        <style>{`
+          @keyframes nrHead { 0%{transform:rotate(0deg)} 25%{transform:rotate(18deg)} 50%{transform:rotate(0deg)} 75%{transform:rotate(-18deg)} 100%{transform:rotate(0deg)} }
+          @keyframes nrShoulderL { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(4deg)} 75%{transform:rotate(-4deg)} }
+          @keyframes nrShoulderR { 0%,100%{transform:rotate(0deg)} 25%{transform:rotate(-4deg)} 75%{transform:rotate(4deg)} }
+          .nr-head { transform-origin:100px 72px; animation:nrHead 5s ease-in-out infinite; }
+          .nr-shL { transform-origin:72px 118px; animation:nrShoulderL 5s ease-in-out infinite; }
+          .nr-shR { transform-origin:128px 118px; animation:nrShoulderR 5s ease-in-out infinite; }
+        `}</style>
+      </defs>
+      {/* Seated body */}
+      <ellipse cx="100" cy="165" rx="30" ry="14" fill="#143820"/>
+      <path d="M70 125 Q68 148 70 168 L130 168 Q132 148 130 125Z" fill="#2a6b38"/>
+      {/* Belly */}
+      <ellipse cx="98" cy="150" rx="22" ry="20" fill="#3a8c4a"/>
+      <ellipse cx="93" cy="142" rx="8" ry="7" fill="rgba(255,255,255,0.07)"/>
+      {/* Chest */}
+      <ellipse cx="100" cy="122" rx="22" ry="16" fill="#2a6b38"/>
+      {/* Shoulders */}
+      <g className="nr-shL">
+        <ellipse cx="60" cy="118" rx="10" ry="20" fill="url(#nr1)" transform="rotate(-15 60 118)"/>
+        <ellipse cx="50" cy="138" rx="8" ry="6" fill="#216330"/>
+        <ellipse cx="44" cy="153" rx="7" ry="15" fill="url(#nr1)"/>
+        <ellipse cx="42" cy="166" rx="6" ry="7" fill="#2a6b38"/>
+      </g>
+      <g className="nr-shR">
+        <ellipse cx="140" cy="118" rx="10" ry="20" fill="#2a6b38" transform="rotate(15 140 118)"/>
+        <ellipse cx="150" cy="138" rx="8" ry="6" fill="#2a6b38"/>
+        <ellipse cx="156" cy="153" rx="7" ry="15" fill="#2a6b38"/>
+        <ellipse cx="158" cy="166" rx="6" ry="7" fill="#3a8c4a"/>
+      </g>
+      {/* Neck */}
+      <ellipse cx="100" cy="108" rx="9" ry="10" fill="#2a6b38"/>
+      {/* Head rolling */}
+      <g className="nr-head">
+        <ellipse cx="100" cy="74" rx="26" ry="28" fill="#2a6b38"/>
+        <ellipse cx="74" cy="74" rx="3" ry="8" fill="rgba(0,0,0,0.1)"/>
+        <ellipse cx="126" cy="74" rx="3" ry="8" fill="rgba(0,0,0,0.1)"/>
+        <ellipse cx="74" cy="75" rx="5" ry="7.5" fill="url(#nr1)"/>
+        <ellipse cx="126" cy="75" rx="5" ry="7.5" fill="#2a6b38"/>
+        <ellipse cx="100" cy="51" rx="28" ry="19" fill="#143820"/>
+        <ellipse cx="100" cy="49" rx="22" ry="14" fill="#1a4724"/>
+        <ellipse cx="93" cy="45" rx="12" ry="9" fill="#216330" opacity="0.4"/>
+        {/* Arc showing neck roll path */}
+        <path d="M74 74 Q100 90 126 74" stroke="rgba(78,154,91,0.3)" strokeWidth="1.5" fill="none" strokeDasharray="4 3"/>
+      </g>
+    </svg>
+  )
+}
+
+const FIGURES: Record<string, React.ReactNode> = {
+  "pelvic-tilt": <PelvicTiltFigure />,
+  "cat-cow": <CatCowFigure />,
+  "ankle-circle": <AnkleCircleFigure />,
+  "breathing": <BreathingFigure />,
+  "neck-roll": <NeckRollFigure />,
 }
 
 export default function MovePage() {
   const { user } = useAppStore()
-  const [active, setActive] = useState<Exercise | null>(null)
+  const [selected, setSelected] = useState<string | null>(null)
   const [step, setStep] = useState(0)
 
-  if (active) {
+  const exercise = EXERCISES.find((e) => e.id === selected)
+
+  if (exercise) {
     return (
-      <div className="min-h-dvh bg-cream-50 pb-24">
-        <header className="bg-white border-b border-stone-100 px-4 py-4 pt-safe flex items-center gap-3">
-          <button onClick={() => { setActive(null); setStep(0) }} className="w-9 h-9 rounded-full bg-stone-100 flex items-center justify-center">
-            <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 text-stone-600"><path d="M15 18 L9 12 L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      <div className="min-h-dvh flex flex-col bg-[#0d1f12] pb-24">
+        {/* Back */}
+        <header className="flex items-center gap-3 px-4 pt-safe pt-4 pb-3">
+          <button onClick={() => { setSelected(null); setStep(0) }}
+            className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center text-white active:bg-white/20">
+            <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4"><path d="M19 12H5M11 6l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
           </button>
           <div>
-            <h1 className="font-display font-bold text-lg text-stone-800">{active.name}</h1>
-            <p className="text-xs text-stone-400">{active.duration} | {active.safeFor}</p>
+            <h1 className="font-display font-bold text-white text-lg leading-tight">{exercise.name}</h1>
+            <p className="text-xs text-green-400/70">{exercise.safeFor}</p>
           </div>
         </header>
 
-        <div className="px-4 pt-4">
-          <div className="card bg-forest-50 border-forest-100 mb-4">
-            <ExerciseAnimation type={active.animation} />
+        {/* Figure stage */}
+        <div className="relative mx-4 rounded-3xl overflow-hidden flex items-center justify-center"
+          style={{ background: "linear-gradient(180deg, #0d1f12 0%, #122a18 60%, #0d1f12 100%)", height: 300 }}>
+          {/* Ambient rings */}
+          {[80, 130, 180].map((r, i) => (
+            <div key={i} className="absolute rounded-full border border-green-500/10 animate-breathe"
+              style={{ width: r * 2, height: r * 2, animationDelay: `${i * 0.35}s` }} />
+          ))}
+          {/* Ground shadow */}
+          <div className="absolute bottom-10 w-20 h-2 rounded-full"
+            style={{ background: "radial-gradient(ellipse, rgba(47,125,62,0.3) 0%, transparent 70%)" }} />
+          <div className="relative z-10 w-full h-full flex items-center justify-center px-8">
+            {FIGURES[exercise.id]}
           </div>
-
-          <div className="card mb-4">
-            <div className="flex items-center gap-2 mb-3">
-              <div className="flex-1 h-1.5 bg-stone-100 rounded-full overflow-hidden">
-                <div className="h-full bg-forest-500 rounded-full transition-all" style={{ width: `${((step + 1) / active.steps.length) * 100}%` }} />
-              </div>
-              <span className="text-xs text-stone-400">{step + 1}/{active.steps.length}</span>
-            </div>
-            <p className="text-lg text-stone-800 leading-relaxed min-h-[60px]">{active.steps[step]}</p>
-          </div>
-
-          <div className="flex gap-3">
-            <button onClick={() => setStep((s) => Math.max(0, s - 1))} disabled={step === 0}
-              className="flex-1 bg-white border border-stone-200 text-stone-700 font-semibold rounded-2xl py-3.5 text-sm disabled:opacity-40">
-              Back
-            </button>
-            {step < active.steps.length - 1 ? (
-              <button onClick={() => setStep((s) => s + 1)}
-                className="flex-1 bg-forest-600 text-white font-semibold rounded-2xl py-3.5 text-sm active:bg-forest-700">
-                Next step
-              </button>
-            ) : (
-              <button onClick={() => { setActive(null); setStep(0) }}
-                className="flex-1 bg-forest-600 text-white font-semibold rounded-2xl py-3.5 text-sm active:bg-forest-700">
-                Done, well done!
-              </button>
-            )}
+          {/* Phase pill */}
+          <div className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-green-900/60 border border-green-700/40 text-green-300 text-[10px] font-bold uppercase tracking-widest px-4 py-1.5 rounded-full whitespace-nowrap">
+            {step === 0 ? "Get ready" : `Step ${step} of ${exercise.steps.length}`}
           </div>
         </div>
+
+        {/* Steps */}
+        <div className="px-4 pt-5 flex flex-col gap-2.5 flex-1">
+          {exercise.steps.map((s, i) => (
+            <div key={i} onClick={() => setStep(i)}
+              className={cn("flex gap-3 items-start p-3.5 rounded-2xl cursor-pointer transition-all",
+                i === step ? "bg-green-900/40 border border-green-700/40" : "bg-white/5 border border-white/5")}>
+              <div className={cn("w-6 h-6 rounded-full flex items-center justify-center text-[11px] font-bold flex-shrink-0 mt-0.5",
+                i === step ? "bg-green-600 text-white" : "bg-white/10 text-green-500/60")}>
+                {i + 1}
+              </div>
+              <p className={cn("text-sm leading-relaxed pt-0.5", i === step ? "text-green-100" : "text-green-800/60")}>{s}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Controls */}
+        <div className="px-4 pt-4 flex items-center gap-3">
+          <button onClick={() => setStep(Math.max(0, step - 1))} disabled={step === 0}
+            className="w-11 h-11 rounded-full border border-green-700/40 bg-white/5 text-green-400 flex items-center justify-center disabled:opacity-20 active:bg-white/10 text-lg">←</button>
+          <div className="flex-1 h-1 bg-green-900/50 rounded-full overflow-hidden">
+            <div className="h-full bg-green-500 rounded-full transition-all duration-400"
+              style={{ width: `${((step + 1) / exercise.steps.length) * 100}%` }} />
+          </div>
+          <span className="text-xs text-green-700 font-semibold min-w-8 text-right">{step + 1}/{exercise.steps.length}</span>
+          <button onClick={() => setStep(Math.min(exercise.steps.length - 1, step + 1))} disabled={step === exercise.steps.length - 1}
+            className="w-11 h-11 rounded-full border border-green-700/40 bg-white/5 text-green-400 flex items-center justify-center disabled:opacity-20 active:bg-white/10 text-lg">→</button>
+        </div>
+
         <BottomNav />
       </div>
     )
@@ -234,36 +468,45 @@ export default function MovePage() {
   return (
     <div className="min-h-dvh bg-cream-50 pb-24">
       <header className="bg-white border-b border-stone-100 px-4 py-4 pt-safe">
-        <h1 className="font-display font-bold text-xl text-stone-800">Move with Lami</h1>
-        <p className="text-sm text-stone-500 mt-0.5">Gentle, safe exercises for every stage</p>
+        <h1 className="font-display font-bold text-xl text-stone-800">Move</h1>
+        <p className="text-sm text-stone-500 mt-0.5">Gentle exercises, just for you{user?.name ? `, ${user.name}` : ""}</p>
       </header>
 
       <div className="px-4 pt-4 space-y-3">
-        <div className="card bg-forest-50 border-forest-100">
-          <p className="text-sm text-forest-700">
-            {user?.name ? `${user.name}, m` : "M"}oving your body a little each day helps with back pain, swelling, sleep, and your mood. Always stop if something hurts.
+        <div className="bg-forest-50 border border-forest-100 rounded-2xl px-4 py-3 mb-4">
+          <p className="text-xs text-forest-700 font-medium">
+            All exercises here are safe during pregnancy. Always stop if something feels wrong and talk to your midwife.
           </p>
         </div>
 
         {EXERCISES.map((ex) => (
-          <button key={ex.id} onClick={() => { setActive(ex); setStep(0) }}
-            className="card w-full text-left active:scale-[0.99] transition-transform hover:shadow-warm">
-            <div className="flex items-start justify-between gap-3">
-              <div className="flex-1">
-                <h3 className="font-display font-bold text-stone-800">{ex.name}</h3>
-                <p className="text-sm text-stone-500 mt-1">{ex.benefit}</p>
-                <div className="flex items-center gap-3 mt-2">
-                  <span className="text-xs bg-sage-100 text-sage-700 px-2 py-1 rounded-lg">{ex.duration}</span>
-                  <span className="text-xs text-stone-400">{ex.safeFor}</span>
+          <button key={ex.id} onClick={() => { setSelected(ex.id); setStep(0) }}
+            className="w-full card text-left hover:shadow-warm transition-shadow active:scale-[0.99]">
+            <div className="flex items-start gap-4">
+              {/* Mini preview figure */}
+              <div className="w-16 h-16 rounded-2xl bg-[#0d1f12] flex items-center justify-center flex-shrink-0 overflow-hidden">
+                <div className="w-12 h-12 scale-75 opacity-90">
+                  {FIGURES[ex.id]}
                 </div>
               </div>
-              <div className="w-10 h-10 rounded-full bg-forest-600 flex items-center justify-center shrink-0">
-                <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 text-white"><path d="M8 5 L18 12 L8 19 Z" fill="currentColor"/></svg>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between gap-2 mb-1">
+                  <h3 className="font-display font-bold text-stone-800">{ex.name}</h3>
+                  <span className="text-xs text-stone-400 shrink-0">{ex.duration}</span>
+                </div>
+                <p className="text-xs text-stone-600 leading-relaxed line-clamp-2">{ex.benefit}</p>
+                <span className="inline-block mt-2 text-[10px] font-semibold uppercase tracking-wide text-forest-600 bg-forest-50 px-2 py-0.5 rounded-full">
+                  {ex.safeFor}
+                </span>
               </div>
+              <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5 text-stone-300 flex-shrink-0 mt-1">
+                <path d="M9 18l6-6-6-6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/>
+              </svg>
             </div>
           </button>
         ))}
       </div>
+
       <BottomNav />
     </div>
   )

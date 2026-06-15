@@ -31,6 +31,14 @@ const QUICK: Record<Mode, string[]> = {
   nutrition: ["What should I eat today?", "Is eba okay?", "Cravings are crazy"],
 }
 
+function SendIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+    </svg>
+  )
+}
+
 export default function ChatPage() {
   const { user, messages, addMessage, chatMode, setChatMode } = useAppStore()
   const [input, setInput] = useState("")
@@ -38,6 +46,7 @@ export default function ChatPage() {
   const [greeted, setGreeted] = useState(false)
   const [sosOpen, setSosOpen] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const scrollToBottom = useCallback(() => {
     requestAnimationFrame(() => scrollRef.current?.scrollIntoView({ behavior: "smooth" }))
@@ -71,7 +80,8 @@ export default function ChatPage() {
     setInput("")
     setIsLoading(true)
     try {
-      const history = messages.filter((m) => m.role === "user" || m.role === "assistant").slice(-10).map((m) => ({ role: m.role, content: m.content }))
+      const history = messages.filter((m) => m.role === "user" || m.role === "assistant")
+        .slice(-10).map((m) => ({ role: m.role, content: m.content }))
       history.push({ role: "user", content: text.trim() })
       const res: ChatResponse = await sendChat({
         messages: history, mode: chatMode,
@@ -87,11 +97,14 @@ export default function ChatPage() {
     }
   }
 
+  const showQuickPrompts = messages.length <= 2 && !isLoading
+
   return (
-    <div className="flex flex-col h-dvh bg-cream-50">
+    <div className="flex flex-col bg-cream-50" style={{ height: "100dvh" }}>
       <EmergencyOverlay open={sosOpen} onClose={() => setSosOpen(false)} />
 
-      <header className="bg-white border-b border-stone-100 pt-safe z-10">
+      {/* Header */}
+      <header className="bg-white border-b border-stone-100 pt-safe z-10 flex-shrink-0">
         <div className="px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-full bg-forest-100 flex items-center justify-center">
@@ -100,7 +113,8 @@ export default function ChatPage() {
             <div>
               <h1 className="font-display font-bold text-lg text-stone-800">Lami</h1>
               <p className="text-[11px] text-forest-500 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-soft" /> here for you
+                <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-soft" />
+                here for you
               </p>
             </div>
           </div>
@@ -108,7 +122,8 @@ export default function ChatPage() {
         <ModeSelector active={chatMode} onChange={handleModeChange} />
       </header>
 
-      <div className="flex-1 overflow-y-auto chat-scroll px-4 py-4 space-y-4 pb-44">
+      {/* Messages */}
+      <div className="flex-1 overflow-y-auto chat-scroll px-4 py-4 space-y-4 min-h-0" style={{ paddingBottom: showQuickPrompts ? "180px" : "140px" }}>
         {messages.map((msg) => (
           <ChatBubble key={msg.id} role={msg.role} content={msg.content}
             tier={msg.tier as "normal" | "see_clinic" | "urgent" | undefined}
@@ -118,35 +133,48 @@ export default function ChatPage() {
         <div ref={scrollRef} />
       </div>
 
-      {messages.length <= 2 && !isLoading && (
-        <div className="px-4 pb-2 flex gap-2 overflow-x-auto scrollbar-none fixed bottom-[136px] left-0 right-0">
-          {QUICK[chatMode].map((p) => (
-            <button key={p} onClick={() => send(p)}
-              className="shrink-0 bg-white border border-stone-200 text-stone-600 text-xs px-3 py-2 rounded-xl active:bg-stone-50 whitespace-nowrap">
-              {p}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* Bottom fixed area */}
+      <div className="flex-shrink-0 bg-white border-t border-stone-100 z-20">
+        {/* Quick prompts */}
+        {showQuickPrompts && (
+          <div className="px-4 pt-3 pb-1 flex gap-2 overflow-x-auto scrollbar-none">
+            {QUICK[chatMode].map((p) => (
+              <button key={p} onClick={() => send(p)}
+                className="shrink-0 bg-forest-50 border border-forest-100 text-forest-700 text-xs px-3 py-2 rounded-xl active:bg-forest-100 whitespace-nowrap font-medium">
+                {p}
+              </button>
+            ))}
+          </div>
+        )}
 
-      <div className="fixed bottom-[72px] left-0 right-0 bg-white border-t border-stone-100 px-4 py-3">
-        <div className="flex gap-3 items-end">
-          <textarea
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
-            onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input) } }}
-            placeholder="Talk to Lami..."
-            rows={1}
-            className="flex-1 resize-none bg-stone-100 rounded-2xl px-4 py-3 text-sm text-stone-800 placeholder:text-stone-400 outline-none min-h-[48px] max-h-[120px] leading-relaxed"
-          />
-          <button onClick={() => send(input)} disabled={!input.trim() || isLoading}
-            className={cn("w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all",
-              input.trim() && !isLoading ? "bg-forest-600 text-white active:bg-forest-700" : "bg-stone-200 text-stone-400")}
-            aria-label="Send">
-            <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><path d="M4 12 L20 4 L14 20 L11 13 Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round" fill="currentColor"/></svg>
-          </button>
+        {/* Input bar */}
+        <div className="px-4 py-3 pb-safe">
+          <div className="flex gap-3 items-end">
+            <textarea
+              ref={inputRef}
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input) } }}
+              placeholder="Talk to Lami..."
+              rows={1}
+              className="flex-1 resize-none bg-stone-100 rounded-2xl px-4 py-3 text-sm text-stone-800 placeholder:text-stone-400 outline-none min-h-[48px] max-h-[120px] leading-relaxed"
+            />
+            <button onClick={() => send(input)} disabled={!input.trim() || isLoading}
+              className={cn(
+                "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all",
+                input.trim() && !isLoading
+                  ? "bg-forest-600 text-white active:bg-forest-700 shadow-warm"
+                  : "bg-stone-200 text-stone-400"
+              )}
+              aria-label="Send">
+              <SendIcon className="w-5 h-5" />
+            </button>
+          </div>
+          <p className="text-[10px] text-stone-400 text-center mt-2">Lami gives guidance, not medical advice.</p>
         </div>
-        <p className="text-[10px] text-stone-400 text-center mt-2">Lami gives guidance, not medical advice.</p>
+
+        {/* Bottom nav spacer */}
+        <div className="h-14" />
       </div>
 
       <BottomNav />
