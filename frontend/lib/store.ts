@@ -9,6 +9,11 @@ interface UserProfile {
   weeklyBudget: number
   preferredLanguage: string
   dueDate?: string
+  babyName?: string
+  emergencyName?: string
+  emergencyPhone?: string
+  hospitalName?: string
+  hospitalPhone?: string
 }
 
 interface ChatMessage {
@@ -24,8 +29,8 @@ interface AppState {
   user: UserProfile | null
   messages: ChatMessage[]
   chatMode: "general" | "symptom" | "nutrition"
-
   setUser: (user: UserProfile) => void
+  updateUser: (patch: Partial<UserProfile>) => void
   addMessage: (msg: ChatMessage) => void
   clearMessages: () => void
   setChatMode: (mode: "general" | "symptom" | "nutrition") => void
@@ -37,19 +42,15 @@ export const useAppStore = create<AppState>()(
       user: null,
       messages: [],
       chatMode: "general",
-
       setUser: (user) => set({ user }),
-      addMessage: (msg) =>
-        set((state) => ({ messages: [...state.messages, msg] })),
+      updateUser: (patch) => set((s) => ({ user: s.user ? { ...s.user, ...patch } : null })),
+      addMessage: (msg) => set((s) => ({ messages: [...s.messages, msg] })),
       clearMessages: () => set({ messages: [] }),
       setChatMode: (mode) => set({ chatMode: mode }),
     }),
     {
-      name: "mum-companion-store",
-      partialize: (state) => ({
-        user: state.user,
-        messages: state.messages.slice(-50), // keep last 50 messages
-      }),
+      name: "mum-ai-companion-store",
+      partialize: (s) => ({ user: s.user, messages: s.messages.slice(-50) }),
     }
   )
 )

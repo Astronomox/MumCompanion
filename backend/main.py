@@ -1,10 +1,10 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import chat, planner, journey
+from routers import chat, planner, journey, medication
 
 app = FastAPI(
-    title="Mum Companion API",
-    description="AI maternal health companion for Nigerian mothers. Powered by MamaBot-Llama.",
+    title="Mum AI Companion API",
+    description="Lami, the AI companion for Nigerian mothers. Built on HelpMum's maternal health knowledge.",
     version="1.0.0",
 )
 
@@ -19,8 +19,9 @@ app.add_middleware(
 app.include_router(chat.router)
 app.include_router(planner.router)
 app.include_router(journey.router)
+app.include_router(medication.router)
 
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "service": "mum-companion-api"}
+    return {"status": "ok", "service": "mum-ai-companion", "companion": "Lami"}

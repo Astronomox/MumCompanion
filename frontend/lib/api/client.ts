@@ -12,12 +12,13 @@ async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
   return res.json() as Promise<T>
 }
 
-// Chat
 export interface ChatPayload {
   messages: { role: "user" | "assistant"; content: string }[]
-  mode: "symptom" | "nutrition" | "general"
+  mode: "symptom" | "nutrition" | "general" | "scan"
+  name: string
   stage: string
   week: number
+  baby_name?: string
 }
 
 export interface ChatResponse {
@@ -28,28 +29,35 @@ export interface ChatResponse {
 }
 
 export function sendChat(payload: ChatPayload): Promise<ChatResponse> {
-  return apiFetch("/chat/", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  })
+  return apiFetch("/chat/", { method: "POST", body: JSON.stringify(payload) })
 }
 
-// Meal planner
-export interface PlannerPayload {
-  weekly_budget: number
-  stage: string
-  week: number
-  dietary_notes?: string
+export interface DrugCheckPayload {
+  drug_name: string
+  dosage?: string
+  frequency?: string
+  with_food?: boolean
 }
 
-export function generateMealPlan(payload: PlannerPayload): Promise<unknown> {
-  return apiFetch("/planner/generate", {
-    method: "POST",
-    body: JSON.stringify(payload),
-  })
+export interface DrugCheckResponse {
+  drug: string
+  pregnancy: "safe" | "caution" | "avoid" | "unknown"
+  breastfeeding: "safe" | "caution" | "avoid" | "unknown"
+  note: string
+  user_dosage?: string
+  user_frequency?: string
+  with_food?: boolean
+  source?: string
 }
 
-// Journey
+export function checkDrug(payload: DrugCheckPayload): Promise<DrugCheckResponse> {
+  return apiFetch("/medication/check", { method: "POST", body: JSON.stringify(payload) })
+}
+
+export function generateMealPlan(payload: { weekly_budget: number; stage: string; week: number; dietary_notes?: string }): Promise<unknown> {
+  return apiFetch("/planner/generate", { method: "POST", body: JSON.stringify(payload) })
+}
+
 export function getWeekContent(week: number, phase = "pregnancy"): Promise<unknown> {
   return apiFetch(`/journey/week/${week}?phase=${phase}`)
 }

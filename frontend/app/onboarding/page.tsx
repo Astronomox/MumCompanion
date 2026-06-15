@@ -2,264 +2,149 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import Link from "next/link"
-import { createClient } from "@/lib/supabase/client"
-import { Logo } from "@/components/svg/Logo"
 import { useAppStore } from "@/lib/store"
+import { Logo } from "@/components/Logo"
+import { cn } from "@/lib/utils/cn"
 
-function ArrowRight({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
-      <path d="M5 12 H19 M13 6 l6 6 l-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  )
+function Arrow({ className = "" }: { className?: string }) {
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M5 12 H19 M13 6 l6 6 l-6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
 }
 
-function Spinner({ className = "" }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 24 24" className={className} xmlns="http://www.w3.org/2000/svg">
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.5" fill="none" opacity="0.25" />
-      <path d="M21 12 a9 9 0 0 0 -9 -9" stroke="currentColor" strokeWidth="2.5" fill="none" strokeLinecap="round">
-        <animateTransform attributeName="transform" type="rotate" from="0 12 12" to="360 12 12" dur="0.8s" repeatCount="indefinite" />
-      </path>
-    </svg>
-  )
-}
-
-function computeWeekFromDueDate(dueDate: string): { week: number; stage: string } {
-  const due = new Date(dueDate)
-  const now = new Date()
-  const msInWeek = 1000 * 60 * 60 * 24 * 7
-  const weeksUntilDue = Math.round((due.getTime() - now.getTime()) / msInWeek)
-  const week = Math.max(1, Math.min(40, 40 - weeksUntilDue))
-
-  let stage = "second_trimester"
-  if (week <= 13) stage = "first_trimester"
-  else if (week <= 27) stage = "second_trimester"
-  else stage = "third_trimester"
-
-  return { week, stage }
+function stageFromWeek(week: number): string {
+  if (week <= 13) return "first_trimester"
+  if (week <= 27) return "second_trimester"
+  return "third_trimester"
 }
 
 export default function OnboardingPage() {
   const router = useRouter()
-  const setUser = useAppStore((s) => s.setUser)
+  const { user, setUser } = useAppStore()
+  const [step, setStep] = useState(0)
 
-  const [step, setStep] = useState(1)
-  const [dueDate, setDueDate] = useState("")
+  const [name, setName] = useState(user?.name || "")
+  const [week, setWeek] = useState(16)
   const [budget, setBudget] = useState(10000)
-  const [language, setLanguage] = useState("en")
-  const [loading, setLoading] = useState(false)
+  const [language, setLanguage] = useState("english")
+  const [emergencyName, setEmergencyName] = useState("")
+  const [emergencyPhone, setEmergencyPhone] = useState("")
+  const [hospitalName, setHospitalName] = useState("")
+  const [hospitalPhone, setHospitalPhone] = useState("")
 
-  const handleComplete = async () => {
-    setLoading(true)
-
-    try {
-      const supabase = createClient()
-      const { data: { user } } = await supabase.auth.getUser()
-
-      if (!user) {
-        router.push("/login")
-        return
-      }
-
-      const { week, stage } = computeWeekFromDueDate(dueDate)
-
-      // Save to local store (Supabase profile table will be wired in next step)
-      setUser({
-        id: user.id,
-        name: user.user_metadata?.full_name || "Mama",
-        stage,
-        week,
-        weeklyBudget: budget,
-        preferredLanguage: language,
-        dueDate,
-      })
-
-      router.push("/chat")
-    } catch {
-      setLoading(false)
-    }
+  const finish = () => {
+    setUser({
+      id: user?.id || `local-${Date.now()}`,
+      name: name.trim() || "Mama",
+      stage: stageFromWeek(week),
+      week,
+      weeklyBudget: budget,
+      preferredLanguage: language,
+      emergencyName: emergencyName.trim(),
+      emergencyPhone: emergencyPhone.trim(),
+      hospitalName: hospitalName.trim(),
+      hospitalPhone: hospitalPhone.trim(),
+    })
+    router.push("/chat")
   }
+
+  const steps = [
+    {
+      title: "Hi, I am Lami",
+      subtitle: "Your companion from today. What should I call you?",
+      valid: name.trim().length > 0,
+      body: (
+        <input value={name} onChange={(e) => setName(e.target.value)} autoFocus
+          placeholder="Your name or nickname"
+          className="w-full bg-white border border-stone-200 rounded-2xl px-4 py-4 text-base outline-none focus:border-forest-400 focus:ring-2 focus:ring-forest-100" />
+      ),
+    },
+    {
+      title: `Lovely to meet you${name ? ", " + name : ""}`,
+      subtitle: "How many weeks pregnant are you? Move the slider, no need to be exact.",
+      valid: true,
+      body: (
+        <div>
+          <div className="text-center mb-4">
+            <p className="text-5xl font-bold text-forest-600 font-display">{week}</p>
+            <p className="text-sm text-stone-400">weeks ({stageFromWeek(week).replace("_", " ")})</p>
+          </div>
+          <input type="range" min={1} max={40} value={week} onChange={(e) => setWeek(parseInt(e.target.value))}
+            className="w-full accent-forest-600" />
+          <div className="flex justify-between text-xs text-stone-400 mt-1"><span>Week 1</span><span>Week 40</span></div>
+        </div>
+      ),
+    },
+    {
+      title: "What can you spend on food each week?",
+      subtitle: "This helps me plan meals that fit your real budget. You can change it anytime.",
+      valid: budget >= 3000,
+      body: (
+        <div>
+          <div className="text-center mb-4">
+            <p className="text-4xl font-bold text-forest-600 font-display">N{budget.toLocaleString()}</p>
+            <p className="text-sm text-stone-400">per week</p>
+          </div>
+          <input type="range" min={3000} max={50000} step={1000} value={budget} onChange={(e) => setBudget(parseInt(e.target.value))}
+            className="w-full accent-forest-600" />
+          <div className="flex justify-between text-xs text-stone-400 mt-1"><span>N3,000</span><span>N50,000</span></div>
+        </div>
+      ),
+    },
+    {
+      title: "One last important thing",
+      subtitle: "Who should I call if there is an emergency? This powers your SOS button. You can skip and add it later in your profile.",
+      valid: true,
+      body: (
+        <div className="space-y-3">
+          <p className="text-xs font-semibold text-stone-400 uppercase tracking-wide">Emergency contact</p>
+          <input value={emergencyName} onChange={(e) => setEmergencyName(e.target.value)}
+            placeholder="Contact name (e.g. My husband)"
+            className="w-full bg-white border border-stone-200 rounded-2xl px-4 py-3.5 text-sm outline-none focus:border-forest-400" />
+          <input value={emergencyPhone} onChange={(e) => setEmergencyPhone(e.target.value)} type="tel"
+            placeholder="Their phone number"
+            className="w-full bg-white border border-stone-200 rounded-2xl px-4 py-3.5 text-sm outline-none focus:border-forest-400" />
+          <p className="text-xs font-semibold text-stone-400 uppercase tracking-wide pt-1">Hospital (optional)</p>
+          <input value={hospitalName} onChange={(e) => setHospitalName(e.target.value)}
+            placeholder="Hospital or clinic name"
+            className="w-full bg-white border border-stone-200 rounded-2xl px-4 py-3.5 text-sm outline-none focus:border-forest-400" />
+          <input value={hospitalPhone} onChange={(e) => setHospitalPhone(e.target.value)} type="tel"
+            placeholder="Hospital phone number"
+            className="w-full bg-white border border-stone-200 rounded-2xl px-4 py-3.5 text-sm outline-none focus:border-forest-400" />
+        </div>
+      ),
+    },
+  ]
+
+  const current = steps[step]
+  const isLast = step === steps.length - 1
 
   return (
     <div className="min-h-dvh bg-cream-50 flex flex-col">
-      <header className="px-5 sm:px-8 pt-6 pb-4">
-        <Link href="/">
-          <Logo />
-        </Link>
-      </header>
-
-      <div className="flex-1 flex items-center justify-center px-5 sm:px-8 py-8">
-        <div className="w-full max-w-lg">
-
-          {/* Progress */}
-          <div className="flex items-center gap-2 mb-8">
-            {[1, 2, 3].map((s) => (
-              <div
-                key={s}
-                className={`h-1.5 flex-1 rounded-full transition-colors ${
-                  s <= step ? "bg-terracotta-500" : "bg-stone-200"
-                }`}
-              />
-            ))}
-          </div>
-
-          {step === 1 && (
-            <div className="animate-fade-in">
-              <h1 className="font-display text-3xl sm:text-4xl font-bold text-stone-900 leading-tight">
-                When are you expecting?
-              </h1>
-              <p className="mt-3 text-stone-600">
-                We use your due date to give you content tuned to your exact week.
-                If you are not sure, your best guess is fine.
-              </p>
-
-              <div className="mt-8">
-                <label className="block text-sm font-medium text-stone-700 mb-1.5">
-                  Estimated due date
-                </label>
-                <input
-                  type="date"
-                  value={dueDate}
-                  onChange={(e) => setDueDate(e.target.value)}
-                  className="w-full bg-white border border-stone-200 rounded-2xl px-4 py-3.5 text-sm outline-none focus:border-terracotta-400 focus:ring-2 focus:ring-terracotta-100"
-                />
-              </div>
-
-              <button
-                onClick={() => setStep(2)}
-                disabled={!dueDate}
-                className="mt-8 w-full bg-terracotta-500 hover:bg-terracotta-600 disabled:bg-stone-300 text-white font-semibold rounded-2xl py-3.5 text-sm shadow-warm flex items-center justify-center gap-2 transition-colors"
-              >
-                Continue
-                <ArrowRight className="w-4 h-4" />
-              </button>
-            </div>
-          )}
-
-          {step === 2 && (
-            <div className="animate-fade-in">
-              <h1 className="font-display text-3xl sm:text-4xl font-bold text-stone-900 leading-tight">
-                What is your weekly food budget?
-              </h1>
-              <p className="mt-3 text-stone-600">
-                Be honest. We will build meal plans that fit what you actually spend.
-                You can change this any time.
-              </p>
-
-              <div className="mt-8 space-y-3">
-                {[5000, 10000, 15000, 20000, 30000].map((amount) => (
-                  <button
-                    key={amount}
-                    onClick={() => setBudget(amount)}
-                    className={`w-full flex items-center justify-between px-5 py-4 rounded-2xl border-2 transition-all ${
-                      budget === amount
-                        ? "border-terracotta-400 bg-terracotta-50"
-                        : "border-stone-200 bg-white hover:border-stone-300"
-                    }`}
-                  >
-                    <span className="font-semibold text-stone-800">
-                      ₦{amount.toLocaleString()}
-                    </span>
-                    {budget === amount && (
-                      <div className="w-5 h-5 rounded-full bg-terracotta-500 flex items-center justify-center">
-                        <svg viewBox="0 0 24 24" className="w-3 h-3 text-white" fill="none">
-                          <path d="M5 12 l4 4 l10 -10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-
-              <div className="mt-6 flex gap-3">
-                <button
-                  onClick={() => setStep(1)}
-                  className="flex-1 bg-white border border-stone-200 text-stone-700 font-semibold rounded-2xl py-3.5 text-sm hover:border-stone-300 transition-colors"
-                >
-                  Back
-                </button>
-                <button
-                  onClick={() => setStep(3)}
-                  className="flex-1 bg-terracotta-500 hover:bg-terracotta-600 text-white font-semibold rounded-2xl py-3.5 text-sm shadow-warm flex items-center justify-center gap-2 transition-colors"
-                >
-                  Continue
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
-            </div>
-          )}
-
-          {step === 3 && (
-            <div className="animate-fade-in">
-              <h1 className="font-display text-3xl sm:text-4xl font-bold text-stone-900 leading-tight">
-                Which language do you prefer?
-              </h1>
-              <p className="mt-3 text-stone-600">
-                You can switch any time. Voice mode will use HelpMum&apos;s 9ja translators
-                in the language you pick.
-              </p>
-
-              <div className="mt-8 space-y-3">
-                {[
-                  { code: "en", label: "English", sub: "Standard chat and content" },
-                  { code: "yo", label: "Yorùbá", sub: "Voice mode in Yoruba" },
-                  { code: "ig", label: "Igbo", sub: "Voice mode in Igbo" },
-                  { code: "ha", label: "Hausa", sub: "Voice mode in Hausa" },
-                ].map((lang) => (
-                  <button
-                    key={lang.code}
-                    onClick={() => setLanguage(lang.code)}
-                    className={`w-full flex items-center justify-between px-5 py-4 rounded-2xl border-2 transition-all text-left ${
-                      language === lang.code
-                        ? "border-terracotta-400 bg-terracotta-50"
-                        : "border-stone-200 bg-white hover:border-stone-300"
-                    }`}
-                  >
-                    <div>
-                      <p className="font-semibold text-stone-800">{lang.label}</p>
-                      <p className="text-xs text-stone-500 mt-0.5">{lang.sub}</p>
-                    </div>
-                    {language === lang.code && (
-                      <div className="w-5 h-5 rounded-full bg-terracotta-500 flex items-center justify-center">
-                        <svg viewBox="0 0 24 24" className="w-3 h-3 text-white" fill="none">
-                          <path d="M5 12 l4 4 l10 -10" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
-                      </div>
-                    )}
-                  </button>
-                ))}
-              </div>
-
-              <div className="mt-6 flex gap-3">
-                <button
-                  onClick={() => setStep(2)}
-                  className="flex-1 bg-white border border-stone-200 text-stone-700 font-semibold rounded-2xl py-3.5 text-sm hover:border-stone-300 transition-colors"
-                >
-                  Back
-                </button>
-                <button
-                  onClick={handleComplete}
-                  disabled={loading}
-                  className="flex-1 bg-terracotta-500 hover:bg-terracotta-600 disabled:bg-stone-300 text-white font-semibold rounded-2xl py-3.5 text-sm shadow-warm flex items-center justify-center gap-2 transition-colors"
-                >
-                  {loading ? (
-                    <>
-                      <Spinner className="w-4 h-4" />
-                      Setting up...
-                    </>
-                  ) : (
-                    <>
-                      Meet MamaBot
-                      <ArrowRight className="w-4 h-4" />
-                    </>
-                  )}
-                </button>
-              </div>
-            </div>
-          )}
+      <div className="px-5 pt-safe pt-6">
+        <Logo size={28} />
+        <div className="mt-6 flex gap-1.5">
+          {steps.map((_, i) => (
+            <div key={i} className={cn("h-1.5 flex-1 rounded-full transition-colors", i <= step ? "bg-forest-500" : "bg-stone-200")} />
+          ))}
         </div>
+      </div>
+
+      <div className="flex-1 flex flex-col justify-center px-5 max-w-md mx-auto w-full">
+        <h1 className="font-display text-3xl font-bold text-stone-900 mb-2">{current.title}</h1>
+        <p className="text-stone-600 mb-8">{current.subtitle}</p>
+        {current.body}
+      </div>
+
+      <div className="px-5 pb-safe pb-8 max-w-md mx-auto w-full space-y-3">
+        <button onClick={() => (isLast ? finish() : setStep((s) => s + 1))} disabled={!current.valid}
+          className="w-full bg-forest-600 disabled:bg-stone-300 text-white font-semibold rounded-2xl py-4 text-sm active:bg-forest-700 transition-colors flex items-center justify-center gap-2">
+          {isLast ? "Meet Lami" : "Continue"} <Arrow className="w-4 h-4" />
+        </button>
+        {isLast && (
+          <button onClick={finish} className="w-full text-stone-400 text-sm py-2">Skip for now</button>
+        )}
+        {step > 0 && !isLast && (
+          <button onClick={() => setStep((s) => s - 1)} className="w-full text-stone-400 text-sm py-2">Back</button>
+        )}
       </div>
     </div>
   )

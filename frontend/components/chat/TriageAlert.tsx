@@ -1,64 +1,49 @@
 "use client"
 
-import { AlertTriangle, Clock, CheckCircle2 } from "lucide-react"
 import { cn } from "@/lib/utils/cn"
 
 interface TriageAlertProps {
   tier: "urgent" | "see_clinic" | "normal"
   redFlagMatched?: string
+  onSos?: () => void
 }
 
-const configs = {
-  urgent: {
-    icon: AlertTriangle,
-    bg: "bg-red-50 border-red-200",
-    text: "text-red-800",
-    iconColor: "text-red-600",
-    heading: "Go to hospital now",
-    body: "Based on what you described, you need immediate medical attention. Please go to the nearest hospital or call emergency services right away.",
-  },
-  see_clinic: {
-    icon: Clock,
-    bg: "bg-amber-50 border-amber-200",
-    text: "text-amber-800",
-    iconColor: "text-amber-600",
-    heading: "See a clinic this week",
-    body: "What you are experiencing needs a healthcare provider's attention. Please book an appointment or visit a clinic within the next few days.",
-  },
-  normal: {
-    icon: CheckCircle2,
-    bg: "bg-green-50 border-green-200",
-    text: "text-green-800",
-    iconColor: "text-green-600",
-    heading: "This is normal",
-    body: "What you are experiencing is common during pregnancy. See below for guidance.",
-  },
+function Warn({ className = "" }: { className?: string }) {
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M12 3 L22 20 H2 Z" stroke="currentColor" strokeWidth="1.8" strokeLinejoin="round"/><path d="M12 10 V14 M12 17 h0.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/></svg>
+}
+function Clock({ className = "" }: { className?: string }) {
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.8"/><path d="M12 7 V12 L15 14" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round"/></svg>
 }
 
-export function TriageAlert({ tier, redFlagMatched }: TriageAlertProps) {
-  const config = configs[tier]
-  const Icon = config.icon
-
+export function TriageAlert({ tier, redFlagMatched, onSos }: TriageAlertProps) {
   if (tier === "normal") return null
 
-  return (
-    <div
-      className={cn(
-        "flex gap-3 rounded-2xl border p-4 mb-3 animate-slide-up",
-        config.bg
-      )}
-      role="alert"
-      aria-live="assertive"
-    >
-      <Icon className={cn("w-5 h-5 mt-0.5 shrink-0", config.iconColor)} />
-      <div className={cn("text-sm", config.text)}>
-        <p className="font-bold mb-1">{config.heading}</p>
-        <p>{config.body}</p>
-        {redFlagMatched && tier === "urgent" && (
-          <p className="mt-2 font-medium">
-            Symptom detected: {redFlagMatched}
-          </p>
+  if (tier === "urgent") {
+    return (
+      <div className="rounded-2xl border border-red-200 bg-red-50 p-4 mb-3 animate-slide-up" role="alert">
+        <div className="flex gap-3">
+          <Warn className="w-5 h-5 mt-0.5 shrink-0 text-red-600" />
+          <div className="text-sm text-red-800">
+            <p className="font-bold mb-1">Please get help now</p>
+            <p>What you described needs urgent medical attention. Do not wait. Use the SOS button or get to a hospital right away.</p>
+            {redFlagMatched && <p className="mt-2 font-medium">Sign detected: {redFlagMatched}</p>}
+          </div>
+        </div>
+        {onSos && (
+          <button onClick={onSos} className="mt-3 w-full bg-red-600 text-white font-bold rounded-xl py-3 text-sm active:bg-red-700">
+            Open Emergency SOS
+          </button>
         )}
+      </div>
+    )
+  }
+
+  return (
+    <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 mb-3 animate-slide-up flex gap-3" role="alert">
+      <Clock className="w-5 h-5 mt-0.5 shrink-0 text-amber-600" />
+      <div className="text-sm text-amber-800">
+        <p className="font-bold mb-1">See a clinic this week</p>
+        <p>This needs a healthcare provider's attention soon. Please book a visit in the next few days.</p>
       </div>
     </div>
   )

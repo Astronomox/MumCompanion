@@ -16,11 +16,9 @@ class PlanRequest(BaseModel):
 async def create_plan(payload: PlanRequest):
     if payload.weekly_budget < 3000:
         raise HTTPException(status_code=400, detail="Minimum budget is 3,000 naira per week")
-
-    plan = await generate_meal_plan(
+    return await generate_meal_plan(
         weekly_budget=payload.weekly_budget,
         stage=payload.stage,
         week=payload.week,
         dietary_notes=payload.dietary_notes,
     )
-    return plan
