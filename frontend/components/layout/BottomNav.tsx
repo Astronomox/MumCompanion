@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { useState } from "react"
 import { cn } from "@/lib/utils/cn"
 import { EmergencyOverlay } from "@/components/emergency/EmergencyOverlay"
+import { DraggableSOS } from "@/components/emergency/DraggableSOS"
 
 function ChatIcon({ active }: { active: boolean }) {
   return (
@@ -34,7 +35,7 @@ function ScanIcon({ active }: { active: boolean }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className="w-6 h-6">
       <path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
-      <path d="M4 12H20" stroke={active ? "currentColor" : "currentColor"} strokeWidth={active ? "2.2" : "1.7"} strokeLinecap="round"/>
+      <path d="M4 12H20" stroke="currentColor" strokeWidth={active ? "2.2" : "1.7"} strokeLinecap="round"/>
     </svg>
   )
 }
@@ -63,14 +64,8 @@ export function BottomNav() {
     <>
       <EmergencyOverlay open={sosOpen} onClose={() => setSosOpen(false)} />
 
-      {/* Floating SOS button */}
-      <button
-        onClick={() => setSosOpen(true)}
-        className="fixed bottom-[72px] right-4 z-50 w-14 h-14 rounded-full bg-red-600 text-white font-bold text-sm flex items-center justify-center shadow-xl animate-sos-pulse active:scale-95 transition-transform"
-        aria-label="Emergency SOS"
-      >
-        SOS
-      </button>
+      {/* Draggable SOS — always visible, edge-snapping */}
+      <DraggableSOS onPress={() => setSosOpen(true)} />
 
       <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-stone-100 pb-safe z-40">
         <div className="flex">
