@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from services.medication import check_medication
+from services.medication import check_drug_safety
 
 router = APIRouter(prefix="/medication", tags=["medication"])
 
@@ -14,7 +14,7 @@ class DrugCheck(BaseModel):
 
 @router.post("/check")
 async def check(payload: DrugCheck):
-    return await check_medication(
+    return await check_drug_safety(
         drug_name=payload.drug_name,
         dosage=payload.dosage,
         frequency=payload.frequency,
