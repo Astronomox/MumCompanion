@@ -1,40 +1,52 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
 from pydantic import BaseModel
 from services.lami import chat_with_lami
+from services.translator import translate_to_english, translate_to_9ja
+from core.red_flags import check_red_flags
 
 router = APIRouter(prefix="/chat", tags=["chat"])
 
 
-class MessageIn(BaseModel):
+class ChatRequest(BaseModel):
     messages: list[dict]
     mode: str = "general"
-    name: str = "Mama"
+    name: str = ""
     stage: str = "second_trimester"
     week: int = 20
     baby_name: str = ""
+    language: str = "english"
 
 
-class MessageOut(BaseModel):
-    answer: str
-    tier: str
-    triage_reason: str | None = None
-    red_flag_matched: str | None = None
+@router.post("/")
+async def chat(req: ChatRequest):
+    if not req.messages:
+        return {"answer": "Hey nne! Talk to me.", "tier": "normal", "triage_reason": None}
 
+    latest = req.messages[-1].get("content", "")
 
-@router.post("/", response_model=MessageOut)
-async def chat(payload: MessageIn):
-    if not payload.messages:
-        raise HTTPException(status_code=400, detail="messages cannot be empty")
-    latest = payload.messages[-1].get("content", "")
-    if not latest:
-        raise HTTPException(status_code=400, detail="last message has no content")
+    # Step 1: if not English, translate incoming message to English first
+    english_message = latest
+    if req.language.lower() not in ("english", "en"):
+        english_message = await translate_to_english(latest, req.language)
 
-    return await chat_with_lami(
-        messages=payload.messages,
-        mode=payload.mode,
-        name=payload.name,
-        stage=payload.stage,
-        week=payload.week,
-        baby_name=payload.baby_name,
-        latest_message=latest,
+    # Step 2: replace last message with English version for processing
+    processed_messages = req.messages[:-1] + [{"role": "user", "content": english_message}]
+
+    # Step 3: get Lami's response in English
+    result = await chat_with_lami(
+        messages=processed_messages,
+        mode=req.mode,
+        name=req.name,
+        stage=req.stage,
+        week=req.week,
+        baby_name=req.baby_name,
+        latest_message=english_message,
     )
+
+    # Step 4: if not English, translate Lami's response back
+    answer = result["answer"]
+    if req.language.lower() not in ("english", "en"):
+        answer = await translate_to_9ja(answer, req.language)
+        result["answer"] = answer
+
+    return result

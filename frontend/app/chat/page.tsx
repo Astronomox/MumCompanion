@@ -2,7 +2,6 @@
 
 import { useState, useRef, useEffect, useCallback } from "react"
 import { ChatBubble, TypingIndicator } from "@/components/chat/ChatBubble"
-import { ModeSelector } from "@/components/chat/ModeSelector"
 import { BottomNav } from "@/components/layout/BottomNav"
 import { EmergencyOverlay } from "@/components/emergency/EmergencyOverlay"
 import { sendChat, type ChatResponse } from "@/lib/api/client"
@@ -10,25 +9,67 @@ import { useAppStore } from "@/lib/store"
 import { cn } from "@/lib/utils/cn"
 
 type Mode = "general" | "symptom" | "nutrition"
+type Language = "english" | "yoruba" | "igbo" | "hausa"
 
-function getGreeting(name: string, mode: Mode): string {
-  const n = name && name !== "Mama" ? name : ""
-  const greetings = {
-    general: [
-      `Hey ${n || "you"}! Lami here. How you dey today?`,
-      `${n ? n + ", h" : "H"}ow far? I was just thinking about you. Talk to me.`,
-    ],
-    symptom: `Okay ${n || "babe"}, tell me what is going on with your body. Do not hold back, I am listening.`,
-    nutrition: `Ehen, let us talk food. What did you eat, or what are you craving? No judgment... okay small judgment.`,
-  }
-  if (mode === "general") return greetings.general[Math.floor(Math.random() * 2)]
-  return greetings[mode]
+const LANGUAGES: { value: Language; label: string; flag: string }[] = [
+  { value: "english", label: "English", flag: "🇬🇧" },
+  { value: "yoruba", label: "Yoruba", flag: "🟢" },
+  { value: "igbo", label: "Igbo", flag: "🔵" },
+  { value: "hausa", label: "Hausa", flag: "🟡" },
+]
+
+const MODES: { value: Mode; label: string }[] = [
+  { value: "general", label: "Chat" },
+  { value: "symptom", label: "Symptoms" },
+  { value: "nutrition", label: "Food" },
+]
+
+const QUICK: Record<Mode, Record<Language, string[]>> = {
+  general: {
+    english: ["I am tired today", "Talk to me", "I cannot sleep"],
+    yoruba: ["Mo rara loni", "Soro pelu mi", "Mi o le sun"],
+    igbo: ["Aru gworo m taa", "Kọọ m ihe", "Enweghị m ura"],
+    hausa: ["Ina gajiya yau", "Yi magana da ni", "Ba zan iya barci ba"],
+  },
+  symptom: {
+    english: ["My back hurts", "My feet are swollen", "I feel dizzy"],
+    yoruba: ["Ehin mi n run", "Ese mi wú", "Ori mi n yi mi"],
+    igbo: ["Azụ m na-awa m", "Ukwu m dị oke", "Isi m na-atụ m"],
+    hausa: ["Bayyana na ciwo", "Kafata sun kumbura", "Kaina yana juyawa"],
+  },
+  nutrition: {
+    english: ["What should I eat today?", "Is eba okay?", "Cravings are crazy"],
+    yoruba: ["Kini mo le je loni?", "Eba dara bi?", "Ifẹ mi n pa mi lara"],
+    igbo: ["Kedu ihe m ga-eri taa?", "Eba dị mma?", "Ifunanya ihe oriri m"],
+    hausa: ["Me zan ci yau?", "Eba ya dace?", "Sha'awar abinci na"],
+  },
 }
 
-const QUICK: Record<Mode, string[]> = {
-  general: ["I am tired today", "Talk to me", "I cannot sleep"],
-  symptom: ["My back hurts", "My feet are swollen", "I feel dizzy"],
-  nutrition: ["What should I eat today?", "Is eba okay?", "Cravings are crazy"],
+function getGreeting(name: string, mode: Mode, language: Language): string {
+  const n = name && name !== "Mama" ? name : ""
+  const greetings: Record<Language, Record<Mode, string>> = {
+    english: {
+      general: `Hey ${n || "you"}! Lami here. How are you doing today?`,
+      symptom: `Okay ${n || "babe"}, tell me what is going on with your body.`,
+      nutrition: `Let us talk food. What did you eat, or what are you craving?`,
+    },
+    yoruba: {
+      general: `Pele ${n || "o"}! Lami ni mi. Bawo ni o se wa loni?`,
+      symptom: `${n || "Oloore mi"}, so fun mi ohun ti n se ara re.`,
+      nutrition: `E je ka soro nipa onje. Kini o je, tabi kini o fe je?`,
+    },
+    igbo: {
+      general: `Nnọọ ${n || "nne"}! Lami bụ aha m. Kedu ka i si dị taa?`,
+      symptom: `${n || "Nne m"}, gwa m ihe na-eme n'ahụ gị.`,
+      nutrition: `Ka anyị kọrọ maka nri. Kedu ihe i riri, ma ọ bụ ihe i chọọ?`,
+    },
+    hausa: {
+      general: `Sannu ${n || "ki"}! Lami ce ni. Yaya kike yau?`,
+      symptom: `${n || "Kawa na"}, gaya mini abin da ke faruwa a jikinkì.`,
+      nutrition: `Bari mu yi magana game da abinci. Me ki ci, ko me kike so?`,
+    },
+  }
+  return greetings[language][mode]
 }
 
 function SendIcon({ className = "" }: { className?: string }) {
@@ -39,14 +80,24 @@ function SendIcon({ className = "" }: { className?: string }) {
   )
 }
 
+function GlobeIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" className={className}>
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6"/>
+      <path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9M3 12h18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+    </svg>
+  )
+}
+
 export default function ChatPage() {
   const { user, messages, addMessage, chatMode, setChatMode } = useAppStore()
   const [input, setInput] = useState("")
   const [isLoading, setIsLoading] = useState(false)
   const [greeted, setGreeted] = useState(false)
   const [sosOpen, setSosOpen] = useState(false)
+  const [language, setLanguage] = useState<Language>("english")
+  const [showLangPicker, setShowLangPicker] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLTextAreaElement>(null)
 
   const scrollToBottom = useCallback(() => {
     requestAnimationFrame(() => scrollRef.current?.scrollIntoView({ behavior: "smooth" }))
@@ -58,19 +109,32 @@ export default function ChatPage() {
     if (!greeted && messages.length === 0) {
       addMessage({
         id: `bot-${Date.now()}`, role: "assistant",
-        content: getGreeting(user?.name || "", "general"),
+        content: getGreeting(user?.name || "", "general", language),
         mode: "general", timestamp: new Date().toISOString(),
       })
       setGreeted(true)
     }
-  }, [greeted, messages.length, user, addMessage])
+  }, [greeted, messages.length, user, addMessage, language])
 
   const handleModeChange = (mode: Mode) => {
     setChatMode(mode)
     addMessage({
       id: `sys-${Date.now()}`, role: "assistant",
-      content: getGreeting(user?.name || "", mode),
+      content: getGreeting(user?.name || "", mode, language),
       mode, timestamp: new Date().toISOString(),
+    })
+  }
+
+  const handleLanguageChange = (lang: Language) => {
+    setLanguage(lang)
+    setShowLangPicker(false)
+    const langLabel = LANGUAGES.find(l => l.value === lang)?.label || lang
+    addMessage({
+      id: `sys-${Date.now()}`, role: "assistant",
+      content: lang === "english"
+        ? "Switched to English. Talk to me!"
+        : `Switched to ${langLabel}. ${getGreeting(user?.name || "", chatMode, lang)}`,
+      mode: chatMode, timestamp: new Date().toISOString(),
     })
   }
 
@@ -80,23 +144,31 @@ export default function ChatPage() {
     setInput("")
     setIsLoading(true)
     try {
-      const history = messages.filter((m) => m.role === "user" || m.role === "assistant")
-        .slice(-10).map((m) => ({ role: m.role, content: m.content }))
+      const history = messages
+        .filter((m) => m.role === "user" || m.role === "assistant")
+        .slice(-10)
+        .map((m) => ({ role: m.role, content: m.content }))
       history.push({ role: "user", content: text.trim() })
+
       const res: ChatResponse = await sendChat({
-        messages: history, mode: chatMode,
-        name: user?.name || "Mama", stage: user?.stage || "second_trimester",
-        week: user?.week || 20, baby_name: user?.babyName || "",
+        messages: history,
+        mode: chatMode,
+        name: user?.name || "Mama",
+        stage: user?.stage || "second_trimester",
+        week: user?.week || 20,
+        baby_name: user?.babyName || "",
+        language,
       })
       addMessage({ id: `bot-${Date.now()}`, role: "assistant", content: res.answer, tier: res.tier, mode: chatMode, timestamp: new Date().toISOString() })
       if (res.tier === "urgent") setSosOpen(true)
     } catch {
-      addMessage({ id: `err-${Date.now()}`, role: "assistant", content: "Ah, my network just disappointed me. Try me again in a second?", mode: chatMode, timestamp: new Date().toISOString() })
+      addMessage({ id: `err-${Date.now()}`, role: "assistant", content: "Ah, my network just disappointed me. Try me again?", mode: chatMode, timestamp: new Date().toISOString() })
     } finally {
       setIsLoading(false)
     }
   }
 
+  const currentLang = LANGUAGES.find(l => l.value === language)!
   const showQuickPrompts = messages.length <= 2 && !isLoading
 
   return (
@@ -113,67 +185,134 @@ export default function ChatPage() {
             <div>
               <h1 className="font-display font-bold text-lg text-stone-800">Lami</h1>
               <p className="text-[11px] text-forest-500 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse-soft" />
+                <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse" />
                 here for you
               </p>
             </div>
           </div>
+
+          {/* Language picker button */}
+          <button
+            onClick={() => setShowLangPicker((v) => !v)}
+            className="flex items-center gap-1.5 bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-full transition-colors"
+          >
+            <GlobeIcon className="w-3.5 h-3.5 text-stone-500" />
+            <span className="text-xs font-semibold text-stone-600">{currentLang.label}</span>
+          </button>
         </div>
-        <ModeSelector active={chatMode} onChange={handleModeChange} />
+
+        {/* Language picker dropdown */}
+        {showLangPicker && (
+          <div className="absolute right-4 top-16 z-50 bg-white border border-stone-200 rounded-2xl shadow-lg overflow-hidden">
+            {LANGUAGES.map((lang) => (
+              <button
+                key={lang.value}
+                onClick={() => handleLanguageChange(lang.value)}
+                className={cn(
+                  "w-full flex items-center gap-3 px-4 py-3 text-sm font-medium transition-colors",
+                  language === lang.value
+                    ? "bg-forest-50 text-forest-700"
+                    : "text-stone-700 hover:bg-stone-50"
+                )}
+              >
+                <span>{lang.flag}</span>
+                <span>{lang.label}</span>
+                {language === lang.value && (
+                  <svg viewBox="0 0 24 24" fill="none" className="w-4 h-4 ml-auto text-forest-600">
+                    <path d="M5 12l4 4 10-10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                  </svg>
+                )}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Mode selector */}
+        <div className="flex px-4 pb-1 gap-2">
+          {MODES.map((m) => (
+            <button
+              key={m.value}
+              onClick={() => handleModeChange(m.value)}
+              className={cn(
+                "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all",
+                chatMode === m.value
+                  ? "bg-forest-600 text-white"
+                  : "bg-stone-100 text-stone-500 hover:bg-stone-200"
+              )}
+            >
+              {m.label}
+            </button>
+          ))}
+        </div>
       </header>
 
       {/* Messages */}
-      <div className="flex-1 overflow-y-auto chat-scroll px-4 py-4 space-y-4 min-h-0" style={{ paddingBottom: showQuickPrompts ? "180px" : "140px" }}>
+      <div
+        className="flex-1 overflow-y-auto px-4 py-4 space-y-4 min-h-0"
+        style={{ paddingBottom: showQuickPrompts ? "200px" : "150px" }}
+      >
         {messages.map((msg) => (
-          <ChatBubble key={msg.id} role={msg.role} content={msg.content}
+          <ChatBubble
+            key={msg.id}
+            role={msg.role}
+            content={msg.content}
             tier={msg.tier as "normal" | "see_clinic" | "urgent" | undefined}
-            onSos={() => setSosOpen(true)} />
+            onSos={() => setSosOpen(true)}
+          />
         ))}
         {isLoading && <TypingIndicator />}
         <div ref={scrollRef} />
       </div>
 
-      {/* Bottom fixed area */}
+      {/* Bottom input area */}
       <div className="flex-shrink-0 bg-white border-t border-stone-100 z-20">
         {/* Quick prompts */}
         {showQuickPrompts && (
           <div className="px-4 pt-3 pb-1 flex gap-2 overflow-x-auto scrollbar-none">
-            {QUICK[chatMode].map((p) => (
-              <button key={p} onClick={() => send(p)}
-                className="shrink-0 bg-forest-50 border border-forest-100 text-forest-700 text-xs px-3 py-2 rounded-xl active:bg-forest-100 whitespace-nowrap font-medium">
+            {QUICK[chatMode][language].map((p) => (
+              <button
+                key={p}
+                onClick={() => send(p)}
+                className="shrink-0 bg-forest-50 border border-forest-100 text-forest-700 text-xs px-3 py-2 rounded-xl active:bg-forest-100 whitespace-nowrap font-medium"
+              >
                 {p}
               </button>
             ))}
           </div>
         )}
 
-        {/* Input bar */}
+        {/* Input row */}
         <div className="px-4 py-3 pb-safe">
           <div className="flex gap-3 items-end">
             <textarea
-              ref={inputRef}
               value={input}
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(input) } }}
-              placeholder="Talk to Lami..."
+              placeholder={
+                language === "yoruba" ? "Soro pelu Lami..." :
+                language === "igbo" ? "Kọọ Lami ihe..." :
+                language === "hausa" ? "Yi magana da Lami..." :
+                "Talk to Lami..."
+              }
               rows={1}
               className="flex-1 resize-none bg-stone-100 rounded-2xl px-4 py-3 text-sm text-stone-800 placeholder:text-stone-400 outline-none min-h-[48px] max-h-[120px] leading-relaxed"
             />
-            <button onClick={() => send(input)} disabled={!input.trim() || isLoading}
+            <button
+              onClick={() => send(input)}
+              disabled={!input.trim() || isLoading}
               className={cn(
                 "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all",
                 input.trim() && !isLoading
-                  ? "bg-forest-600 text-white active:bg-forest-700 shadow-warm"
+                  ? "bg-forest-600 text-white active:bg-forest-700 shadow-sm"
                   : "bg-stone-200 text-stone-400"
               )}
-              aria-label="Send">
+            >
               <SendIcon className="w-5 h-5" />
             </button>
           </div>
           <p className="text-[10px] text-stone-400 text-center mt-2">Lami gives guidance, not medical advice.</p>
         </div>
 
-        {/* Bottom nav spacer */}
         <div className="h-14" />
       </div>
 

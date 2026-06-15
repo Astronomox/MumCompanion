@@ -19,6 +19,7 @@ export interface ChatPayload {
   stage: string
   week: number
   baby_name?: string
+  language?: string
 }
 
 export interface ChatResponse {
@@ -47,7 +48,6 @@ export interface DrugCheckResponse {
   user_dosage?: string
   user_frequency?: string
   with_food?: boolean
-  source?: string
 }
 
 export function checkDrug(payload: DrugCheckPayload): Promise<DrugCheckResponse> {
