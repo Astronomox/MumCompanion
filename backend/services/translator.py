@@ -1,16 +1,13 @@
-"""HelpMum 9ja Translation Service.
+"""HelpMum 9ja Translation Service - Production-ready.
 
-Uses HelpMum's official open-source translation models:
+Uses HelpMum's M2M100-based translation models:
 - HelpMumHQ/AI-translator-9ja-to-eng  (Yoruba/Igbo/Hausa -> English)
 - HelpMumHQ/AI-translator-eng-to-9ja  (English -> Yoruba/Igbo/Hausa)
 
-Language codes:
-- yo = Yoruba
-- ig = Igbo  
-- ha = Hausa
-- en = English
+Handles cold starts, retries, and forwards target language correctly.
 """
 import os
+import asyncio
 import httpx
 
 HF_9JA_TO_ENG = "https://api-inference.huggingface.co/models/HelpMumHQ/AI-translator-9ja-to-eng"
@@ -21,17 +18,14 @@ LANGUAGE_CODES = {
     "igbo": "ig",
     "hausa": "ha",
     "english": "en",
-}
-
-LANGUAGE_NAMES = {
-    "yo": "Yoruba",
-    "ig": "Igbo",
-    "ha": "Hausa",
-    "en": "English",
+    "yo": "yo",
+    "ig": "ig",
+    "ha": "ha",
+    "en": "en",
 }
 
 
-def _get_headers() -> dict:
+def _headers() -> dict:
     token = os.environ.get("HF_API_TOKEN", "")
     return {
         "Authorization": f"Bearer {token}",
@@ -39,73 +33,112 @@ def _get_headers() -> dict:
     }
 
 
-async def translate_to_english(text: str, source_language: str) -> str:
-    """Translate from Yoruba/Igbo/Hausa to English."""
-    lang = LANGUAGE_CODES.get(source_language.lower(), source_language.lower())
+async def _call_hf(url: str, src: str, tgt: str, text: str) -> str:
+    """Call HF Inference API with retries for cold start."""
+    payload = {
+        "inputs": text,
+        "parameters": {
+            "src_lang": src,
+            "tgt_lang": tgt,
+        },
+        "options": {
+            "wait_for_model": True,
+            "use_cache": True,
+        }
+    }
 
-    if lang == "en":
+    max_attempts = 3
+    for attempt in range(max_attempts):
+        try:
+            async with httpx.AsyncClient(timeout=45.0) as client:
+                resp = await client.post(url, headers=_headers(), json=payload)
+
+                # Cold start - model is loading
+                if resp.status_code == 503:
+                    try:
+                        body = resp.json()
+                        wait = float(body.get("estimated_time", 15.0))
+                        print(f"[translator] Cold start, waiting {wait}s")
+                        await asyncio.sleep(min(wait, 20))
+                        continue
+                    except Exception:
+                        await asyncio.sleep(10)
+                        continue
+
+                if resp.status_code != 200:
+                    print(f"[translator] HTTP {resp.status_code}: {resp.text[:200]}")
+                    if attempt < max_attempts - 1:
+                        await asyncio.sleep(2)
+                        continue
+                    return text
+
+                data = resp.json()
+
+                # Response is typically [{"translation_text": "..."}]
+                if isinstance(data, list) and data:
+                    item = data[0]
+                    if isinstance(item, dict):
+                        if "translation_text" in item:
+                            return item["translation_text"].strip()
+                        if "generated_text" in item:
+                            return item["generated_text"].strip()
+                elif isinstance(data, dict):
+                    if "translation_text" in data:
+                        return data["translation_text"].strip()
+                    if "generated_text" in data:
+                        return data["generated_text"].strip()
+
+                print(f"[translator] Unexpected response shape: {str(data)[:200]}")
+                return text
+
+        except httpx.TimeoutException:
+            print(f"[translator] Timeout on attempt {attempt+1}")
+            if attempt < max_attempts - 1:
+                continue
+            return text
+        except Exception as e:
+            print(f"[translator] Error: {e}")
+            if attempt < max_attempts - 1:
+                await asyncio.sleep(1)
+                continue
+            return text
+
+    return text
+
+
+async def translate_to_english(text: str, source_language: str) -> str:
+    """Yoruba/Igbo/Hausa -> English."""
+    if not text or not text.strip():
+        return text
+
+    src = LANGUAGE_CODES.get(source_language.lower(), "en")
+    if src == "en":
         return text
 
     token = os.environ.get("HF_API_TOKEN", "")
     if not token:
+        print("[translator] No HF_API_TOKEN set")
         return text
 
-    try:
-        payload = {
-            "inputs": text,
-            "parameters": {
-                "src_lang": lang,
-                "tgt_lang": "en",
-            }
-        }
-        async with httpx.AsyncClient(timeout=15.0) as client:
-            resp = await client.post(
-                HF_9JA_TO_ENG,
-                headers=_get_headers(),
-                json=payload,
-            )
-            resp.raise_for_status()
-            data = resp.json()
-
-            if isinstance(data, list) and data:
-                return data[0].get("translation_text", text)
-            return text
-    except Exception as e:
-        print(f"Translation 9ja->eng failed: {e}")
-        return text
+    result = await _call_hf(HF_9JA_TO_ENG, src, "en", text)
+    print(f"[translator] {src}->en: '{text[:50]}' => '{result[:50]}'")
+    return result
 
 
 async def translate_to_9ja(text: str, target_language: str) -> str:
-    """Translate from English to Yoruba/Igbo/Hausa."""
-    lang = LANGUAGE_CODES.get(target_language.lower(), target_language.lower())
+    """English -> Yoruba/Igbo/Hausa."""
+    if not text or not text.strip():
+        return text
 
-    if lang == "en":
+    tgt = LANGUAGE_CODES.get(target_language.lower(), "en")
+    if tgt == "en":
         return text
 
     token = os.environ.get("HF_API_TOKEN", "")
     if not token:
+        print("[translator] No HF_API_TOKEN set")
         return text
 
-    try:
-        payload = {
-            "inputs": text,
-            "parameters": {
-                "src_lang": "en",
-                "tgt_lang": lang,
-            }
-        }
-        async with httpx.AsyncClient(timeout=15.0) as client:
-            resp = await client.post(
-                HF_ENG_TO_9JA,
-                headers=_get_headers(),
-                json=payload,
-            )
-            resp.raise_for_status()
-            data = resp.json()
-
-            if isinstance(data, list) and data:
-                return data[0].get("translation_text", text)
-            return text
-    except Exception as e:
-        print(f"Translation eng->9ja failed: {e}")
-        return text
+    result = await _call_hf(HF_ENG_TO_9JA, "en", tgt, text)
+    print(f"[translator] en->{tgt}: '{text[:50]}' => '{result[:50]}'")
+    return result
