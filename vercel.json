@@ -1,1 +1,12 @@
-{ "buildCommand": "pnpm install && pnpm build", "outputDirectory": ".next", "framework": "nextjs", "installCommand": "pnpm install" } 
+{
+  "buildCommand": "pnpm install && pnpm build",
+  "outputDirectory": ".next",
+  "framework": "nextjs",
+  "installCommand": "pnpm install",
+  "crons": [
+    {
+      "path": "/api/keepalive",
+      "schedule": "*/10 * * * *"
+    }
+  ]
+}

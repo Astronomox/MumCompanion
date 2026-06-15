@@ -85,9 +85,9 @@ export default function SettingsPage() {
     } catch {}
     // Wipe all local state
     clearMessages()
-    // @ts-ignore — reset user to null
+    // @ts-ignore - reset user to null
     setUser(null)
-    // Hard navigate — kills all React state, clears memory
+    // Hard navigate - kills all React state, clears memory
     window.location.replace("/login")
   }
 

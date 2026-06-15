@@ -29,8 +29,8 @@ const EXERCISES = [
     benefit: "Relieves back tension and creates space for baby.",
     steps: [
       "Get on your hands and knees on a soft surface.",
-      "Breathe in — let your belly drop toward the floor, look gently up.",
-      "Breathe out — round your back toward the ceiling, chin to chest.",
+      "Breathe in - let your belly drop toward the floor, look gently up.",
+      "Breathe out - round your back toward the ceiling, chin to chest.",
       "Move slowly between both shapes with your breath.",
       "Repeat 8 to 10 times. Never force the movement.",
     ],
@@ -44,7 +44,7 @@ const EXERCISES = [
     steps: [
       "Sit comfortably on a chair with good back support.",
       "Lift your right foot slightly off the ground.",
-      "Rotate your ankle slowly — 10 times clockwise.",
+      "Rotate your ankle slowly - 10 times clockwise.",
       "Then 10 times counter-clockwise. Switch feet.",
       "Do this twice a day, especially after long sitting.",
     ],
@@ -58,7 +58,7 @@ const EXERCISES = [
     steps: [
       "Sit or lie somewhere comfortable. Close your eyes.",
       "Breathe in through your nose for 4 slow counts.",
-      "Hold gently for 4 counts — do not strain.",
+      "Hold gently for 4 counts - do not strain.",
       "Breathe out through your mouth for 6 counts.",
       "Repeat for 5 minutes.",
     ],
@@ -73,7 +73,7 @@ const EXERCISES = [
       "Sit tall in a chair or cross-legged on the floor.",
       "Drop your right ear slowly toward your right shoulder.",
       "Roll your chin down toward your chest, then left shoulder.",
-      "Move slowly — never force or roll your head all the way back.",
+      "Move slowly - never force or roll your head all the way back.",
       "Repeat 3 times each side. Stop if you feel dizzy.",
     ],
   },
@@ -107,7 +107,7 @@ const VIDEOS: Record<string, Video[]> = {
     },
     {
       id: "ft3",
-      title: "35 Min Full Body Prenatal Workout — All Trimesters",
+      title: "35 Min Full Body Prenatal Workout - All Trimesters",
       channel: "Nourish Move Love",
       duration: "35 min",
       videoId: "tn54beUcPgo",
@@ -123,14 +123,14 @@ const VIDEOS: Record<string, Video[]> = {
     },
     {
       id: "st2",
-      title: "Prenatal Pilates — Safe for Second Trimester",
+      title: "Prenatal Pilates - Safe for Second Trimester",
       channel: "Pregnancy and Postpartum TV",
       duration: "20 min",
       videoId: "Mzzn87e_u8A",
     },
     {
       id: "st3",
-      title: "20 Min Prenatal Strength — Second Trimester",
+      title: "20 Min Prenatal Strength - Second Trimester",
       channel: "BodyFit by Amy",
       duration: "20 min",
       videoId: "n9eASCpFOwk",
@@ -146,14 +146,14 @@ const VIDEOS: Record<string, Video[]> = {
     },
     {
       id: "tt2",
-      title: "Postpartum Pelvic Floor Recovery — Start Here",
+      title: "Postpartum Pelvic Floor Recovery - Start Here",
       channel: "Pregnancy and Postpartum TV",
       duration: "8 min",
       videoId: "-hSZqmuN41E",
     },
     {
       id: "tt3",
-      title: "Healing Exercises — 0 to 6 Weeks Before Birth",
+      title: "Healing Exercises - 0 to 6 Weeks Before Birth",
       channel: "LEMon Yoga",
       duration: "15 min",
       videoId: "fbZhxb0fE20",
@@ -162,7 +162,7 @@ const VIDEOS: Record<string, Video[]> = {
   postpartum: [
     {
       id: "pp1",
-      title: "Postpartum Pelvic Floor Exercises — Daily",
+      title: "Postpartum Pelvic Floor Exercises - Daily",
       channel: "Pregnancy and Postpartum TV",
       duration: "12 min",
       videoId: "lSGn-zKxJzw",

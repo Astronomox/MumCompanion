@@ -31,7 +31,7 @@ export default function OnboardingPage() {
   const { setUser } = useAppStore()
   const [step, setStep] = useState(0)
 
-  // All fields start empty — no mock data
+  // All fields start empty - no mock data
   const [name, setName] = useState("")
   const [week, setWeek] = useState<number | "">("")
   const [budget, setBudget] = useState<number | "">("")
@@ -116,7 +116,7 @@ export default function OnboardingPage() {
 
           {typeof week === "number" && week >= 1 && (
             <div className="bg-forest-50 border border-forest-100 rounded-2xl px-4 py-3 text-center">
-              <p className="text-sm font-semibold text-forest-700">Week {week} — {stageLabel(week)}</p>
+              <p className="text-sm font-semibold text-forest-700">Week {week} - {stageLabel(week)}</p>
             </div>
           )}
         </div>

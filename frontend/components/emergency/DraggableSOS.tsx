@@ -55,7 +55,7 @@ export function DraggableSOS({ onPress }: DraggableSOSProps) {
     return { x: snapX, y: snapY }
   }, [])
 
-  // Default position — right side, above bottom nav
+  // Default position - right side, above bottom nav
   const getDefaultPos = useCallback(() => {
     const W = window.innerWidth
     const H = window.innerHeight
@@ -121,7 +121,7 @@ export function DraggableSOS({ onPress }: DraggableSOSProps) {
     setDragging(false)
 
     if (!hasMoved.current) {
-      // It was a tap, not a drag — open SOS
+      // It was a tap, not a drag - open SOS
       setSettled(true)
       onPress()
       return
@@ -171,7 +171,7 @@ export function DraggableSOS({ onPress }: DraggableSOSProps) {
         WebkitTransform: dragging ? "scale(1.12)" : "scale(1)",
       }}
     >
-      {/* Pulse ring — only when not dragging */}
+      {/* Pulse ring - only when not dragging */}
       {!dragging && (
         <span style={{
           position: "absolute",
