@@ -26,7 +26,9 @@ function LoginContent() {
   const router = useRouter()
   const params = useSearchParams()
   const next = params.get("next") || "/chat"
-  const [email, setEmail] = useState("")
+  const prefillEmail = params.get("email") || ""
+  const justConfirmed = params.get("confirmed") === "1"
+  const [email, setEmail] = useState(prefillEmail)
   const [password, setPassword] = useState("")
   const [show, setShow] = useState(false)
   const [loading, setLoading] = useState(false)
@@ -67,6 +69,11 @@ function LoginContent() {
               <p className="mt-2 text-stone-600">Sign in to continue with Lami.</p>
             </div>
             <form onSubmit={submit} className="space-y-5">
+              {justConfirmed && !error && (
+                <div className="rounded-2xl border border-forest-200 bg-forest-50 px-4 py-3 text-sm text-forest-700">
+                  Email confirmed. Enter your password to continue.
+                </div>
+              )}
               {error && <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">{error}</div>}
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-stone-700 mb-1.5">Email</label>
@@ -81,7 +88,7 @@ function LoginContent() {
                 </div>
                 <div className="relative">
                   <input id="password" type={show ? "text" : "password"} required autoComplete="current-password" value={password} onChange={(e) => setPassword(e.target.value)}
-                    placeholder="At least 8 characters"
+                    placeholder="At least 8 characters" autoFocus={justConfirmed && !!prefillEmail}
                     className="w-full bg-white border border-stone-200 rounded-2xl px-4 py-3.5 pr-12 text-sm outline-none focus:border-forest-400 focus:ring-2 focus:ring-forest-100 transition-all" />
                   <button type="button" onClick={() => setShow((v) => !v)} className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center text-stone-400" aria-label="Toggle password"><Eye open={show} className="w-5 h-5" /></button>
                 </div>
