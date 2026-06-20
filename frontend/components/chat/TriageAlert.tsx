@@ -39,11 +39,11 @@ export function TriageAlert({ tier, redFlagMatched, onSos }: TriageAlertProps) {
   }
 
   return (
-    <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 mb-3 animate-slide-up flex gap-3" role="alert">
-      <Clock className="w-5 h-5 mt-0.5 shrink-0 text-amber-600" />
-      <div className="text-sm text-amber-800">
-        <p className="font-bold mb-1">See a clinic this week</p>
-        <p>This needs a healthcare provider's attention soon. Please book a visit in the next few days.</p>
+    <div className="rounded-2xl border border-cream-300/60 bg-cream-50 p-4 mb-3 animate-slide-up flex gap-3" role="alert">
+      <Clock className="w-5 h-5 mt-0.5 shrink-0 text-cream-500" />
+      <div className="text-sm text-stone-700">
+        <p className="font-bold mb-1 text-stone-800">See a clinic this week</p>
+        <p>This needs a healthcare provider&apos;s attention soon. Please book a visit in the next few days.</p>
       </div>
     </div>
   )

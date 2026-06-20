@@ -213,32 +213,34 @@ export default function ChatPage() {
     <div className="flex flex-col bg-cream-50" style={{ height: "100dvh" }}>
       <EmergencyOverlay open={sosOpen} onClose={() => setSosOpen(false)} />
 
-      <header className="bg-white border-b border-stone-100 pt-safe z-10 flex-shrink-0 relative">
-        <div className="px-4 py-3 flex items-center justify-between">
+      <header className="bg-forest-700 pt-safe z-10 flex-shrink-0 relative">
+        <div className="px-4 py-3.5 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full overflow-hidden bg-forest-100 flex items-center justify-center flex-shrink-0">
+            <div className="w-12 h-12 rounded-full overflow-hidden bg-forest-100 flex items-center justify-center flex-shrink-0 ring-2 ring-cream-400/60 shadow-brass">
               <img src="/images/lami-avatar.jpg" alt="Lami" className="w-full h-full object-cover" />
             </div>
             <div>
-              <h1 className="font-display font-bold text-lg text-stone-800">Lami</h1>
-              <p className="text-[11px] text-forest-500 flex items-center gap-1">
-                <span className="w-1.5 h-1.5 rounded-full bg-forest-500 animate-pulse" />
+              <h1 className="font-serif font-semibold text-xl text-cream-50 tracking-wide">Lami</h1>
+              <p className="text-[10.5px] text-cream-300 flex items-center gap-1.5 font-medium uppercase tracking-widest mt-0.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-cream-400" style={{ boxShadow: "0 0 6px rgb(var(--cream-400))" }} />
                 here for you
               </p>
             </div>
           </div>
 
           <button onClick={() => setShowLangPicker((v) => !v)}
-            className="flex items-center gap-1.5 bg-stone-100 hover:bg-stone-200 px-3 py-1.5 rounded-full transition-colors">
-            <GlobeIcon className="w-3.5 h-3.5 text-stone-500" />
-            <span className="text-xs font-semibold text-stone-600">{currentLang.label}</span>
+            className="flex items-center gap-1.5 bg-white/8 border border-cream-400/30 hover:bg-white/12 px-3.5 py-1.5 rounded-full transition-colors">
+            <GlobeIcon className="w-3.5 h-3.5 text-cream-300" />
+            <span className="text-xs font-semibold text-cream-200">{currentLang.label}</span>
           </button>
         </div>
+
+        <div className="h-px mx-4" style={{ background: "linear-gradient(90deg, transparent, rgb(var(--cream-400) / 0.5) 30%, rgb(var(--cream-500) / 0.7) 50%, rgb(var(--cream-400) / 0.5) 70%, transparent)" }} />
 
         {showLangPicker && (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setShowLangPicker(false)} />
-            <div className="absolute right-4 top-16 z-50 bg-white border border-stone-200 rounded-2xl shadow-lg overflow-hidden min-w-[160px]">
+            <div className="absolute right-4 top-16 z-50 bg-white border border-stone-200 rounded-2xl shadow-glass overflow-hidden min-w-[160px]">
               {LANGUAGES.map((lang) => (
                 <button key={lang.value} onClick={() => handleLanguageChange(lang.value)}
                   className={cn(
@@ -259,12 +261,14 @@ export default function ChatPage() {
           </>
         )}
 
-        <div className="flex px-4 pb-2 gap-2">
+        <div className="flex px-4 pt-3 pb-3.5 gap-2">
           {MODES.map((m) => (
             <button key={m.value} onClick={() => handleModeChange(m.value)}
               className={cn(
-                "flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-all",
-                chatMode === m.value ? "bg-forest-600 text-white" : "bg-stone-100 text-stone-500 hover:bg-stone-200"
+                "flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-semibold transition-all",
+                chatMode === m.value
+                  ? "bg-cream-400 text-forest-900 shadow-brass"
+                  : "bg-white/6 border border-white/10 text-cream-300 hover:bg-white/10"
               )}>
               {m.label}
             </button>
@@ -315,13 +319,13 @@ export default function ChatPage() {
                 "Talk to Lami..."
               }
               rows={1}
-              className="flex-1 resize-none bg-stone-100 rounded-2xl px-4 py-3 text-sm text-stone-800 placeholder:text-stone-400 outline-none min-h-[48px] max-h-[120px] leading-relaxed"
+              className="flex-1 resize-none bg-stone-50 border border-stone-200 rounded-2xl px-4 py-3 text-sm text-stone-800 placeholder:text-stone-400 outline-none focus:border-cream-400 focus:ring-2 focus:ring-cream-100 min-h-[48px] max-h-[120px] leading-relaxed transition-colors"
             />
             <button onClick={() => send(input)} disabled={!input.trim() || isLoading}
               className={cn(
                 "w-12 h-12 rounded-2xl flex items-center justify-center shrink-0 transition-all",
                 input.trim() && !isLoading
-                  ? "bg-forest-600 text-white active:bg-forest-700 shadow-sm"
+                  ? "bg-gradient-to-br from-cream-300 to-cream-500 text-forest-900 active:scale-95 shadow-brass"
                   : "bg-stone-200 text-stone-400"
               )}>
               <SendIcon className="w-5 h-5" />

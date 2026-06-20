@@ -53,7 +53,7 @@ export default function JourneyPage() {
     return (
       <div className="min-h-dvh bg-cream-50 pb-24">
         <header className="bg-white border-b border-stone-100 px-4 py-4 pt-safe">
-          <h1 className="font-display font-bold text-xl text-stone-800">Your Journey{user?.name ? `, ${user.name}` : ""}</h1>
+          <h1 className="font-serif font-semibold text-xl text-stone-800">Your Journey{user?.name ? `, ${user.name}` : ""}</h1>
           <p className="text-sm text-stone-500 mt-0.5">Week by week, together</p>
         </header>
         <div className="px-4 pt-12 text-center">
@@ -63,7 +63,7 @@ export default function JourneyPage() {
               <path d="M4 10H20M8 3V7M16 3V7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
             </svg>
           </div>
-          <h2 className="font-display font-bold text-lg text-stone-800 mb-2">First, tell me your week</h2>
+          <h2 className="font-serif font-semibold text-lg text-stone-800 mb-2">First, tell me your week</h2>
           <p className="text-sm text-stone-500 mb-6 max-w-xs mx-auto leading-relaxed">
             I cannot guide you week by week if I do not know how far along you are. Tap below to set your week.
           </p>
@@ -80,27 +80,28 @@ export default function JourneyPage() {
   return (
     <div className="min-h-dvh bg-cream-50 pb-24">
       <header className="bg-white border-b border-stone-100 px-4 py-4 pt-safe">
-        <h1 className="font-display font-bold text-xl text-stone-800">Your Journey{user?.name ? `, ${user.name}` : ""}</h1>
+        <h1 className="font-serif font-semibold text-xl text-stone-800">Your Journey{user?.name ? `, ${user.name}` : ""}</h1>
         <p className="text-sm text-stone-500 mt-0.5">Week by week, together</p>
       </header>
 
-      <div className="bg-white border-b border-stone-100 px-4 py-3">
+      <div className="bg-forest-800 px-4 py-5 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,162,75,0.45) 50%, transparent)" }} />
         <div className="flex items-center justify-between">
           <button onClick={() => setWeek((w) => Math.max(1, w - 1))} disabled={week <= 1}
-            className="tap-target rounded-xl text-stone-500 disabled:opacity-30">
+            className="tap-target rounded-xl text-cream-300/70 disabled:opacity-25 hover:text-cream-200 transition-colors">
             <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><path d="M15 18 L9 12 L15 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
           <div className="text-center">
-            <p className="text-2xl font-bold text-forest-600">Week {week}</p>
-            <p className="text-xs text-stone-400">of 40</p>
+            <p className="text-3xl font-serif font-semibold text-cream-50">Week {week}</p>
+            <p className="text-[11px] text-cream-300/60 uppercase tracking-widest mt-0.5">of 40</p>
           </div>
           <button onClick={() => setWeek((w) => Math.min(40, w + 1))} disabled={week >= 40}
-            className="tap-target rounded-xl text-stone-500 disabled:opacity-30">
+            className="tap-target rounded-xl text-cream-300/70 disabled:opacity-25 hover:text-cream-200 transition-colors">
             <svg viewBox="0 0 24 24" fill="none" className="w-5 h-5"><path d="M9 6 L15 12 L9 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
           </button>
         </div>
-        <div className="mt-3 h-2 bg-stone-100 rounded-full overflow-hidden">
-          <div className="h-full bg-forest-500 rounded-full transition-all duration-500" style={{ width: `${(week / 40) * 100}%` }} />
+        <div className="mt-4 h-1.5 bg-white/8 rounded-full overflow-hidden">
+          <div className="h-full rounded-full transition-all duration-500" style={{ width: `${(week / 40) * 100}%`, background: "linear-gradient(90deg, rgb(var(--cream-300)), rgb(var(--cream-500)))" }} />
         </div>
       </div>
 
@@ -121,8 +122,9 @@ export default function JourneyPage() {
             {content.nutrition_tips?.length > 0 && <Section title="Nutrition this week" items={content.nutrition_tips} accent="border-sage-400" />}
             {content.warning_signs_this_week?.length > 0 && <Section title="Watch for these" items={content.warning_signs_this_week} accent="border-amber-300" />}
             {content.affirmation && (
-              <div className="card bg-sage-50 border-sage-100 mb-4">
-                <p className="text-sm text-sage-800 italic text-center leading-relaxed">{content.affirmation}</p>
+              <div className="card bg-forest-800 border-cream-400/20 mb-4 relative overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,162,75,0.4) 50%, transparent)" }} />
+                <p className="font-serif text-base text-cream-100 italic text-center leading-relaxed">&ldquo;{content.affirmation}&rdquo;</p>
               </div>
             )}
           </>

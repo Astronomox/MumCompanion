@@ -68,18 +68,19 @@ export function BottomNav() {
     <>
       <EmergencyOverlay open={sosOpen} onClose={() => setSosOpen(false)} />
       <DraggableSOS onPress={() => setSosOpen(true)} isHidden={sosOpen} />
-      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-stone-100 pb-safe z-40">
+      <nav className="fixed bottom-0 left-0 right-0 bg-white border-t border-stone-100 pb-safe z-40 shadow-[0_-4px_20px_rgba(0,0,0,0.04)]">
         <div className="flex">
           {tabs.map(({ href, label, Icon }) => {
             const active = pathname.startsWith(href)
             return (
               <Link key={href} href={href}
                 className={cn(
-                  "flex-1 flex flex-col items-center justify-center gap-1 py-2.5 min-h-[56px] text-[11px] font-medium transition-colors",
-                  active ? "text-forest-600" : "text-stone-400"
+                  "relative flex-1 flex flex-col items-center justify-center gap-1 py-2.5 min-h-[56px] text-[11px] font-medium transition-colors",
+                  active ? "text-forest-700" : "text-stone-400"
                 )}>
                 <Icon active={active} />
-                <span>{label}</span>
+                <span className={active ? "font-semibold" : ""}>{label}</span>
+                {active && <span className="absolute top-0 w-8 h-[2px] rounded-full bg-cream-400" />}
               </Link>
             )
           })}

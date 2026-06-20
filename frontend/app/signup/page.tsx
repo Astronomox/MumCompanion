@@ -59,7 +59,7 @@ export default function SignupPage() {
       <div className="min-h-dvh bg-cream-50 flex items-center justify-center px-5">
         <div className="max-w-md text-center">
           <div className="w-16 h-16 mx-auto rounded-3xl bg-forest-50 flex items-center justify-center mb-6"><Check className="w-8 h-8 text-forest-600" /></div>
-          <h1 className="font-display text-3xl font-bold text-stone-900">Check your email</h1>
+          <h1 className="font-serif text-3xl font-semibold text-stone-900">Check your email</h1>
           <p className="mt-3 text-stone-600">Lami sent a confirmation link to <span className="font-medium text-stone-800">{email}</span>. Click it to start.</p>
           <Link href="/login" className="mt-8 inline-flex items-center gap-2 text-forest-600 hover:text-forest-700 font-semibold">Back to sign in<Arrow className="w-4 h-4" /></Link>
         </div>
@@ -80,7 +80,7 @@ export default function SignupPage() {
         <div className="flex-1 flex items-center justify-center px-5 sm:px-8 py-8 lg:py-12">
           <div className="w-full max-w-md">
             <div className="mb-8">
-              <h1 className="font-display text-3xl sm:text-4xl font-bold text-stone-900 tracking-tight">Start your journey</h1>
+              <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-stone-900 tracking-tight">Start your journey</h1>
               <p className="mt-2 text-stone-600">Free forever. No card needed. Lami is ready to meet you.</p>
             </div>
             <form onSubmit={submit} className="space-y-5">
@@ -147,13 +147,14 @@ export default function SignupPage() {
 
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden flex-col justify-end order-1 lg:order-2"
         style={{ backgroundImage: `url('${HERO}')`, backgroundSize: "cover", backgroundPosition: "center 25%" }}>
-        <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(21,52,30,0.25) 0%, rgba(21,52,30,0.9) 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(180deg, rgba(7,15,11,0.3) 0%, rgba(7,15,11,0.94) 100%)" }} />
+        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,162,75,0.4) 50%, transparent)" }} />
         <div className="relative z-10 p-10 space-y-3">
-          <p className="font-display text-xl text-white font-bold mb-4">What Lami gives you</p>
+          <p className="font-serif text-xl text-cream-50 font-semibold mb-4">What Lami gives you</p>
           {["A friend to chat with day or night", "Emergency help in one tap", "Medicine checks and meal plans", "Gentle exercises for every week"].map((item) => (
             <div key={item} className="flex items-start gap-2.5">
-              <div className="shrink-0 w-5 h-5 rounded-full bg-forest-500 flex items-center justify-center mt-0.5"><Check className="w-3 h-3 text-white" /></div>
-              <p className="text-sm text-white/90 leading-relaxed">{item}</p>
+              <div className="shrink-0 w-5 h-5 rounded-full flex items-center justify-center mt-0.5" style={{ background: "linear-gradient(135deg, rgb(var(--cream-300)), rgb(var(--cream-500)))" }}><Check className="w-3 h-3 text-forest-900" /></div>
+              <p className="text-sm text-cream-100/90 leading-relaxed">{item}</p>
             </div>
           ))}
         </div>

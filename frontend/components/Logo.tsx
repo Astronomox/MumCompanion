@@ -34,19 +34,19 @@ export function Logo({ className = "", size = 32, showText = true, light = false
           d="M20 4 C30 4 36 12 36 22 C36 30 30 36 20 36 C12 36 6 30 6 22 C6 12 12 4 20 4 Z"
           fill={`url(#${uid})`}
         />
-        {/* Heart cutout — mother + child */}
+        {/* Heart cutout - mother + child */}
         <path
           d="M20 28 C16 24 12 21 12 17 C12 14.5 14 13 16 13 C17.5 13 19 14 20 15.5 C21 14 22.5 13 24 13 C26 13 28 14.5 28 17 C28 21 24 24 20 28 Z"
-          fill="#fdfcf7"
+          fill="#F4EFE3"
         />
         {/* Baby dot */}
-        <circle cx="20" cy="19" r="2.5" fill="#4e9a5b" />
+        <circle cx="20" cy="19" r="2.5" fill="#C9A24B" />
       </svg>
 
       {showText && (
         <span
-          className={`font-display font-bold text-lg tracking-tight leading-none ${
-            light ? "text-white" : "text-forest-800"
+          className={`font-serif font-semibold text-lg tracking-tight leading-none ${
+            light ? "text-cream-50" : "text-forest-800"
           }`}
           style={{ listStyle: "none" }}
         >

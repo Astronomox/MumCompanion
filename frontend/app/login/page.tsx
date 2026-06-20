@@ -49,15 +49,16 @@ function LoginContent() {
     <div className="min-h-dvh flex flex-col lg:flex-row bg-cream-50">
       <div className="hidden lg:flex lg:w-1/2 relative overflow-hidden flex-col justify-end"
         style={{ backgroundImage: `url('${HERO}')`, backgroundSize: "cover", backgroundPosition: "center 25%" }}>
-        <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, rgba(21,52,30,0.7) 0%, rgba(21,52,30,0.35) 45%, rgba(21,52,30,0.9) 100%)" }} />
+        <div className="absolute inset-0" style={{ background: "linear-gradient(160deg, rgba(7,15,11,0.75) 0%, rgba(7,15,11,0.4) 45%, rgba(7,15,11,0.94) 100%)" }} />
+        <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,162,75,0.4) 50%, transparent)" }} />
         <div className="relative z-10 p-10">
-          <p className="font-display text-2xl text-white leading-snug font-bold">&ldquo;Welcome back. I missed you. Let us continue.&rdquo;</p>
-          <p className="mt-3 text-sm text-white/70">Lami, your companion through every season.</p>
+          <p className="font-serif text-2xl text-cream-50 leading-snug font-semibold">&ldquo;Welcome back. I missed you. Let us continue.&rdquo;</p>
+          <p className="mt-3 text-sm text-cream-300/70">Lami, your companion through every season.</p>
         </div>
       </div>
       <div className="lg:hidden relative h-40 flex items-center justify-center overflow-hidden"
         style={{ backgroundImage: `url('${HERO}')`, backgroundSize: "cover", backgroundPosition: "center 20%" }}>
-        <div className="absolute inset-0" style={{ background: "rgba(21,52,30,0.7)" }} />
+        <div className="absolute inset-0" style={{ background: "rgba(7,15,11,0.78)" }} />
         <div className="relative z-10"><Logo light /></div>
       </div>
       <div className="flex-1 lg:w-1/2 flex flex-col">
@@ -65,7 +66,7 @@ function LoginContent() {
         <div className="flex-1 flex items-center justify-center px-5 sm:px-8 py-8 lg:py-12">
           <div className="w-full max-w-md">
             <div className="mb-8">
-              <h1 className="font-display text-3xl sm:text-4xl font-bold text-stone-900 tracking-tight">Welcome back</h1>
+              <h1 className="font-serif text-3xl sm:text-4xl font-semibold text-stone-900 tracking-tight">Welcome back</h1>
               <p className="mt-2 text-stone-600">Sign in to continue with Lami.</p>
             </div>
             <form onSubmit={submit} className="space-y-5">

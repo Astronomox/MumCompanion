@@ -306,7 +306,7 @@ export default function MovePage() {
             </svg>
           </button>
           <div>
-            <h1 className="font-display font-bold text-xl text-stone-800">{exercise.name}</h1>
+            <h1 className="font-serif font-semibold text-xl text-stone-800">{exercise.name}</h1>
             <p className="text-xs text-forest-600 font-medium">{exercise.tag} · {exercise.duration}</p>
           </div>
         </header>
@@ -359,8 +359,9 @@ export default function MovePage() {
           </div>
 
           {step === exercise.steps.length - 1 && (
-            <div className="bg-forest-50 border border-forest-100 rounded-2xl px-4 py-3 text-center">
-              <p className="text-sm text-forest-700 font-medium">Well done, nne. Take a breath.</p>
+            <div className="bg-forest-800 border border-cream-400/20 rounded-2xl px-4 py-4 text-center relative overflow-hidden">
+              <div className="absolute top-0 left-0 right-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(201,162,75,0.4) 50%, transparent)" }} />
+              <p className="font-serif text-base text-cream-50 italic">Well done, nne. Take a breath.</p>
             </div>
           )}
         </div>
@@ -373,7 +374,7 @@ export default function MovePage() {
   return (
     <div className="min-h-dvh bg-cream-50 pb-28">
       <header className="bg-white border-b border-stone-100 px-4 py-4 pt-safe">
-        <h1 className="font-display font-bold text-xl text-stone-800">Move</h1>
+        <h1 className="font-serif font-semibold text-xl text-stone-800">Move</h1>
         <p className="text-sm text-stone-500 mt-0.5">
           Gentle exercises{user?.name ? `, ${user.name}` : ""}
         </p>

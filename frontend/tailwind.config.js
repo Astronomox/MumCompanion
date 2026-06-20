@@ -48,6 +48,28 @@ module.exports = {
           400: "#c08163",
           500: "#a9684b",
         },
+        brass: {
+          50: "#FBF6E9",
+          100: "#F3E6C2",
+          200: "#E3C878",
+          300: "#D4AE5C",
+          400: "#C9A24B",
+          500: "#B08A38",
+          600: "#8C6D2C",
+          700: "#6B5320",
+          800: "#4A3A16",
+        },
+        ink: {
+          50: "#E8ECE9",
+          100: "#C4D0C8",
+          200: "#3A4A40",
+          300: "#243830",
+          400: "#142B20",
+          500: "#0E1F17",
+          600: "#0A1712",
+          700: "#070F0B",
+          800: "#040A07",
+        },
         white: "rgb(var(--surface-card) / <alpha-value>)",
         stone: {
           50: "rgb(var(--stone-50) / <alpha-value>)",
@@ -65,6 +87,7 @@ module.exports = {
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         display: ["var(--font-bricolage)", "system-ui", "sans-serif"],
+        serif: ["var(--font-fraunces)", "Georgia", "serif"],
       },
       borderRadius: {
         "2xl": "1rem",
@@ -72,6 +95,10 @@ module.exports = {
       boxShadow: {
         card: "0 1px 3px rgba(0,0,0,0.06), 0 4px 14px rgba(0,0,0,0.04)",
         warm: "0 4px 14px rgba(33,99,48,0.18)",
+        glass: "0 8px 24px rgba(0,0,0,0.25)",
+        brass: "0 6px 16px rgba(201,162,75,0.35)",
+        emerald: "0 8px 20px rgba(31,92,61,0.35)",
+        luxe: "0 30px 60px rgba(0,0,0,0.35), 0 1px 0 rgba(255,255,255,0.04) inset",
       },
       animation: {
         "pulse-soft": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",

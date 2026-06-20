@@ -134,7 +134,7 @@ export default function SettingsPage() {
         <div className="flex items-center gap-2.5">
           <GearIcon className="w-5 h-5 text-forest-600" />
           <div>
-            <h1 className="font-display font-bold text-xl text-stone-800">Settings</h1>
+            <h1 className="font-serif font-semibold text-xl text-stone-800">Settings</h1>
             <p className="text-xs text-stone-400 mt-0.5">Your details and safety setup</p>
           </div>
         </div>

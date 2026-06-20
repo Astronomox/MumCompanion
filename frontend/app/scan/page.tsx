@@ -158,7 +158,7 @@ export default function ScanPage() {
   return (
     <div className="min-h-dvh bg-cream-50 pb-24">
       <header className="bg-white border-b border-stone-100 px-4 py-4 pt-safe">
-        <h1 className="font-display font-bold text-xl text-stone-800">Medicine Check</h1>
+        <h1 className="font-serif font-semibold text-xl text-stone-800">Medicine Check</h1>
         <p className="text-sm text-stone-500 mt-0.5">Is this drug safe for you and baby?</p>
       </header>
 
@@ -307,7 +307,7 @@ export default function ScanPage() {
                 )}
                 <div>
                   <p className="text-xs font-semibold text-stone-400 uppercase tracking-wide mb-1">Results for</p>
-                  <h2 className="font-display font-bold text-2xl text-stone-800">{result.drug}</h2>
+                  <h2 className="font-serif font-semibold text-2xl text-stone-800">{result.drug}</h2>
                 </div>
               </div>
 
