@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: ["selector", '[data-theme="dark"]'],
   content: [
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -7,42 +8,38 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Primary - deep warm forest green
         forest: {
-          50: "#eef6ef",
-          100: "#d6ebd8",
-          200: "#aed6b3",
-          300: "#7cba85",
-          400: "#4e9a5b",
-          500: "#2f7d3e",
-          600: "#216330",
-          700: "#1c4f29",
-          800: "#193f23",
-          900: "#15341e",
+          50: "rgb(var(--forest-50) / <alpha-value>)",
+          100: "rgb(var(--forest-100) / <alpha-value>)",
+          200: "rgb(var(--forest-200) / <alpha-value>)",
+          300: "rgb(var(--forest-300) / <alpha-value>)",
+          400: "rgb(var(--forest-400) / <alpha-value>)",
+          500: "rgb(var(--forest-500) / <alpha-value>)",
+          600: "rgb(var(--forest-600) / <alpha-value>)",
+          700: "rgb(var(--forest-700) / <alpha-value>)",
+          800: "rgb(var(--forest-800) / <alpha-value>)",
+          900: "rgb(var(--forest-900) / <alpha-value>)",
         },
-        // Sage - soft secondary green
         sage: {
-          50: "#f4f7f2",
-          100: "#e6ede1",
-          200: "#cedbc4",
-          300: "#abc09c",
-          400: "#83a06f",
-          500: "#64834f",
-          600: "#4d683d",
-          700: "#3e5333",
-          800: "#34442c",
-          900: "#2c3a26",
+          50: "rgb(var(--sage-50) / <alpha-value>)",
+          100: "rgb(var(--sage-100) / <alpha-value>)",
+          200: "rgb(var(--sage-200) / <alpha-value>)",
+          300: "rgb(var(--sage-300) / <alpha-value>)",
+          400: "rgb(var(--sage-400) / <alpha-value>)",
+          500: "rgb(var(--sage-500) / <alpha-value>)",
+          600: "rgb(var(--sage-600) / <alpha-value>)",
+          700: "rgb(var(--sage-700) / <alpha-value>)",
+          800: "rgb(var(--sage-800) / <alpha-value>)",
+          900: "rgb(var(--sage-900) / <alpha-value>)",
         },
-        // Warm cream backgrounds
         cream: {
-          50: "#fdfcf7",
-          100: "#faf7ed",
-          200: "#f4eed8",
-          300: "#ebe0bb",
-          400: "#ddc98c",
-          500: "#cdb05f",
+          50: "rgb(var(--cream-50) / <alpha-value>)",
+          100: "rgb(var(--cream-100) / <alpha-value>)",
+          200: "rgb(var(--cream-200) / <alpha-value>)",
+          300: "rgb(var(--cream-300) / <alpha-value>)",
+          400: "rgb(var(--cream-400) / <alpha-value>)",
+          500: "rgb(var(--cream-500) / <alpha-value>)",
         },
-        // Soft clay accent (warmth without orange)
         clay: {
           50: "#faf4f1",
           100: "#f2e3da",
@@ -51,6 +48,19 @@ module.exports = {
           400: "#c08163",
           500: "#a9684b",
         },
+        white: "rgb(var(--surface-card) / <alpha-value>)",
+        stone: {
+          50: "rgb(var(--stone-50) / <alpha-value>)",
+          100: "rgb(var(--stone-100) / <alpha-value>)",
+          200: "rgb(var(--stone-200) / <alpha-value>)",
+          300: "rgb(var(--stone-300) / <alpha-value>)",
+          400: "rgb(var(--stone-400) / <alpha-value>)",
+          500: "rgb(var(--stone-500) / <alpha-value>)",
+          600: "rgb(var(--stone-600) / <alpha-value>)",
+          700: "rgb(var(--stone-700) / <alpha-value>)",
+          800: "rgb(var(--stone-800) / <alpha-value>)",
+          900: "rgb(var(--stone-900) / <alpha-value>)",
+        },
       },
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
@@ -58,13 +68,6 @@ module.exports = {
       },
       borderRadius: {
         "2xl": "1rem",
-        "3xl": "1.5rem",
-        "4xl": "2rem",
-      },
-      boxShadow: {
-        warm: "0 4px 24px -4px rgba(33, 99, 48, 0.14)",
-        card: "0 2px 16px -2px rgba(20, 50, 30, 0.08)",
-        glow: "0 0 0 4px rgba(47, 125, 62, 0.12)",
       },
       animation: {
         "pulse-soft": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",

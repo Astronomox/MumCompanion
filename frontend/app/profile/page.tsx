@@ -5,6 +5,7 @@ import { BottomNav } from "@/components/layout/BottomNav"
 import { useAppStore } from "@/lib/store"
 import { createClient } from "@/lib/supabase/client"
 import { cn } from "@/lib/utils/cn"
+import { ThemeToggle } from "@/components/ThemeToggle"
 
 function GearIcon({ className = "" }: { className?: string }) {
   return (
@@ -140,6 +141,17 @@ export default function SettingsPage() {
       </header>
 
       <div className="px-4 pt-4 space-y-4">
+
+        {/* Appearance */}
+        <div className="card">
+          <div className="flex items-center justify-between">
+            <div>
+              <h2 className="font-display font-bold text-stone-800 mb-0.5">Appearance</h2>
+              <p className="text-xs text-stone-400">Switch between light and dark</p>
+            </div>
+            <ThemeToggle />
+          </div>
+        </div>
 
         {/* About You */}
         <div className="card">
