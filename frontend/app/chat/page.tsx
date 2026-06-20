@@ -216,8 +216,8 @@ export default function ChatPage() {
       <header className="bg-white border-b border-stone-100 pt-safe z-10 flex-shrink-0 relative">
         <div className="px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-full bg-forest-100 flex items-center justify-center">
-              <span className="font-display font-bold text-forest-700">L</span>
+            <div className="w-10 h-10 rounded-full overflow-hidden bg-forest-100 flex items-center justify-center flex-shrink-0">
+              <img src="/images/lami-avatar.jpg" alt="Lami" className="w-full h-full object-cover" />
             </div>
             <div>
               <h1 className="font-display font-bold text-lg text-stone-800">Lami</h1>
