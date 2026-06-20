@@ -4,13 +4,14 @@ import { useState, useEffect, useRef, useCallback } from "react"
 
 interface DraggableSOSProps {
   onPress: () => void
+  isHidden?: boolean
 }
 
 const STORAGE_KEY = "lami-sos-position"
 const BTN_SIZE = 56
 const EDGE_MARGIN = 12
 
-export function DraggableSOS({ onPress }: DraggableSOSProps) {
+export function DraggableSOS({ onPress, isHidden = false }: DraggableSOSProps) {
   const [pos, setPos] = useState({ x: 0, y: 0 })
   const [dragging, setDragging] = useState(false)
   const [settled, setSettled] = useState(false)
@@ -153,7 +154,11 @@ export function DraggableSOS({ onPress }: DraggableSOSProps) {
         touchAction: "none",
         userSelect: "none",
         cursor: dragging ? "grabbing" : "grab",
-        transition: settled && !dragging ? "left 0.3s cubic-bezier(0.34,1.56,0.64,1), top 0.3s cubic-bezier(0.34,1.56,0.64,1)" : "none",
+        transition: settled && !dragging
+          ? "left 0.3s cubic-bezier(0.34,1.56,0.64,1), top 0.3s cubic-bezier(0.34,1.56,0.64,1), opacity 0.25s ease, transform 0.25s ease"
+          : "opacity 0.25s ease",
+        opacity: isHidden ? 0 : 1,
+        pointerEvents: isHidden ? "none" : "auto",
         borderRadius: "50%",
         background: "linear-gradient(135deg, #ef4444, #dc2626)",
         border: "none",

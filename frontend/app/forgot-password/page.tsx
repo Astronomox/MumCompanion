@@ -23,8 +23,8 @@ function Spinner({ className = "" }: { className?: string }) {
 function MailIcon() {
   return (
     <svg viewBox="0 0 24 24" fill="none" className="w-8 h-8 text-forest-500">
-      <rect x="2" y="4" width="20" height="16" rx="3" stroke="currentColor" strokeWidth="1.5"/>
-      <path d="M2 8l10 6 10-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/>
+      <rect x="2" y="4" width="20" height="16" rx="3" stroke="currentColor" strokeWidth="2.2"/>
+      <path d="M2 8l10 6 10-6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
     </svg>
   )
 }

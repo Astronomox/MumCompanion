@@ -9,9 +9,9 @@ const HERO = "https://images.unsplash.com/photo-1752240879764-97bb683bf0d5?w=120
 
 function Eye({ open, className = "" }: { open: boolean; className?: string }) {
   return open ? (
-    <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M2 12 s4 -7 10 -7 s10 7 10 7 s-4 7 -10 7 s-10 -7 -10 -7 Z" stroke="currentColor" strokeWidth="1.5"/><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="1.5"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M2 12 s4 -7 10 -7 s10 7 10 7 s-4 7 -10 7 s-10 -7 -10 -7 Z" stroke="currentColor" strokeWidth="2.2"/><circle cx="12" cy="12" r="3" stroke="currentColor" strokeWidth="2.2"/></svg>
   ) : (
-    <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M3 3 L21 21 M10.5 6.5 a10 10 0 0 1 1.5 -0.5 c6 0 10 7 10 7 s-1.3 2.3 -3.5 4.2 M6.5 8.5 C3.7 10.2 2 12 2 12 s4 7 10 7 c1.8 0 3.4 -0.6 4.7 -1.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+    <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M3 3 L21 21 M10.5 6.5 a10 10 0 0 1 1.5 -0.5 c6 0 10 7 10 7 s-1.3 2.3 -3.5 4.2 M6.5 8.5 C3.7 10.2 2 12 2 12 s4 7 10 7 c1.8 0 3.4 -0.6 4.7 -1.5" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/></svg>
   )
 }
 function Arrow({ className = "" }: { className?: string }) {

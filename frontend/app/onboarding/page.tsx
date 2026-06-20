@@ -93,7 +93,6 @@ export default function OnboardingPage() {
     }
 
     // Set the onboarded cookie so middleware lets her through
-    document.cookie = "lami-onboarded=1; path=/; max-age=31536000; SameSite=Lax"
 
     setSaving(false)
     router.push("/chat")

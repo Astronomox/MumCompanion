@@ -5,13 +5,13 @@ import { cn } from "@/lib/utils/cn"
 type Mode = "general" | "symptom" | "nutrition"
 
 function Chat2({ className = "" }: { className?: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M4 6 a3 3 0 0 1 3 -3 h10 a3 3 0 0 1 3 3 v6 a3 3 0 0 1 -3 3 H9 l-4 3 v-3 a3 3 0 0 1 -1 -9 Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M4 6 a3 3 0 0 1 3 -3 h10 a3 3 0 0 1 3 3 v6 a3 3 0 0 1 -3 3 H9 l-4 3 v-3 a3 3 0 0 1 -1 -9 Z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round"/></svg>
 }
 function Stetho({ className = "" }: { className?: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M5 3 v5 a4 4 0 0 0 8 0 V3 M9 16 a5 5 0 0 0 10 0 v-3" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/><circle cx="19" cy="11" r="2" stroke="currentColor" strokeWidth="1.6"/></svg>
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M5 3 v5 a4 4 0 0 0 8 0 V3 M9 16 a5 5 0 0 0 10 0 v-3" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/><circle cx="19" cy="11" r="2" stroke="currentColor" strokeWidth="2.2"/></svg>
 }
 function Apple({ className = "" }: { className?: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M12 8 c-2 -2 -6 -1 -6 4 c0 4 3 9 6 9 s6 -5 6 -9 c0 -5 -4 -6 -6 -4 Z" stroke="currentColor" strokeWidth="1.6"/><path d="M12 8 V5 a2 2 0 0 1 2 -2" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M12 8 c-2 -2 -6 -1 -6 4 c0 4 3 9 6 9 s6 -5 6 -9 c0 -5 -4 -6 -6 -4 Z" stroke="currentColor" strokeWidth="2.2"/><path d="M12 8 V5 a2 2 0 0 1 2 -2" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/></svg>
 }
 
 const modes: { id: Mode; label: string; icon: typeof Chat2 }[] = [

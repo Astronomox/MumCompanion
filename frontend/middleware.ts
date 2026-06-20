@@ -26,13 +26,21 @@ export async function middleware(request: NextRequest) {
     },
   })
 
+  // CRITICAL: always re-validate session, never trust cache on protected/auth pages
   const { data: { user } } = await supabase.auth.getUser()
   const path = request.nextUrl.pathname
   const isProtected = PROTECTED_PREFIXES.some((p) => path.startsWith(p))
   const isAuthPage = AUTH_PAGES.includes(path)
   const isOnboarding = path.startsWith("/onboarding")
 
-  // Not logged in trying to reach protected page or onboarding
+  // Force no-cache on every protected route so back-swipe never shows stale authenticated content
+  if (isProtected || isOnboarding) {
+    response.headers.set("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate")
+    response.headers.set("Pragma", "no-cache")
+    response.headers.set("Expires", "0")
+  }
+
+  // Not logged in trying to reach protected page or onboarding -> login
   if ((isProtected || isOnboarding) && !user) {
     const u = request.nextUrl.clone()
     u.pathname = "/login"
@@ -40,17 +48,24 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(u)
   }
 
-  // Logged in on auth page - go straight to chat
+  // Logged in on auth page -> go straight to chat
   if (isAuthPage && user) {
     const u = request.nextUrl.clone()
     u.pathname = "/chat"
     return NextResponse.redirect(u)
   }
 
-  // Logged in but no profile completed - force onboarding
+  // Logged in and hitting a protected page -> check REAL profile in Supabase, not a cookie
   if (isProtected && user) {
-    const onboardedCookie = request.cookies.get("lami-onboarded")
-    if (!onboardedCookie || onboardedCookie.value !== "1") {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("name, week")
+      .eq("id", user.id)
+      .maybeSingle()
+
+    const hasCompletedProfile = !!(profile?.name && profile?.week)
+
+    if (!hasCompletedProfile) {
       const u = request.nextUrl.clone()
       u.pathname = "/onboarding"
       return NextResponse.redirect(u)

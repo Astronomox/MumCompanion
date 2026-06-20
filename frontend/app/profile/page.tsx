@@ -9,26 +9,26 @@ import { cn } from "@/lib/utils/cn"
 function GearIcon({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className}>
-      <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
-      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1Z" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   )
 }
 
 function ShieldIcon({ className = "" }: { className?: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M12 2L4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5Z" stroke="currentColor" strokeWidth="1.6" strokeLinejoin="round"/></svg>
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M12 2L4 5v6c0 5 3.5 9 8 11 4.5-2 8-6 8-11V5Z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round"/></svg>
 }
 function UserIcon({ className = "" }: { className?: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" className={className}><circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="1.6"/><path d="M5 20a7 7 0 0 1 14 0" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><circle cx="12" cy="8" r="4" stroke="currentColor" strokeWidth="2.2"/><path d="M5 20a7 7 0 0 1 14 0" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/></svg>
 }
 function CheckIcon({ className = "" }: { className?: string }) {
   return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M5 12l4 4 10-10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
 }
 function LogOutIcon({ className = "" }: { className?: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"/></svg>
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
 }
 function CalIcon({ className = "" }: { className?: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" className={className}><rect x="4" y="5" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="1.6"/><path d="M4 10H20M8 3V7M16 3V7" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/></svg>
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><rect x="4" y="5" width="16" height="16" rx="2" stroke="currentColor" strokeWidth="2.2"/><path d="M4 10H20M8 3V7M16 3V7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/></svg>
 }
 
 export default function SettingsPage() {
@@ -115,9 +115,12 @@ export default function SettingsPage() {
     clearMessages()
     // @ts-ignore
     setUser(null)
-    // Clear onboarded cookie too
-    document.cookie = "lami-onboarded=; path=/; max-age=0"
-    window.location.replace("/login")
+    // Clear the persisted store entirely, not just the user field
+    try {
+      localStorage.removeItem("mum-ai-companion-store")
+    } catch {}
+    // Hard replace with cache-busting param so back-swipe cannot show stale authenticated page
+    window.location.replace("/login?signedout=" + Date.now())
   }
 
   const hasEmergency = emergencyName && emergencyPhone

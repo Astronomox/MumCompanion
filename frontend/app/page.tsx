@@ -5,25 +5,25 @@ const HERO_IMG = "https://images.unsplash.com/photo-1560707854-fb9a10eeaace?w=16
 const BREAK_IMG = "https://images.unsplash.com/photo-1752240879764-97bb683bf0d5?w=1400&q=85"
 
 function ArrowRight({ className = "" }: { className?: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M5 12 H19 M13 6 l6 6 l-6 6" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M5 12 H19 M13 6 l6 6 l-6 6" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
 }
 function Check({ className = "" }: { className?: string }) {
   return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M5 12 l4 4 l10 -10" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round"/></svg>
 }
 function Chat({ className = "" }: { className?: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M4 6 a3 3 0 0 1 3 -3 h10 a3 3 0 0 1 3 3 v7 a3 3 0 0 1 -3 3 H9 l-5 4 v-4 a3 3 0 0 1 0 -10 Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="12" cy="8" r="1" fill="currentColor"/></svg>
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M4 6 a3 3 0 0 1 3 -3 h10 a3 3 0 0 1 3 3 v7 a3 3 0 0 1 -3 3 H9 l-5 4 v-4 a3 3 0 0 1 0 -10 Z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round"/><circle cx="8" cy="8" r="1" fill="currentColor"/><circle cx="12" cy="8" r="1" fill="currentColor"/></svg>
 }
 function Move({ className = "" }: { className?: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" className={className}><circle cx="12" cy="5" r="2.2" stroke="currentColor" strokeWidth="1.5"/><path d="M12 8 V15 M12 11 L7 13 M12 11 L17 13 M12 15 L9 21 M12 15 L15 21" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"/></svg>
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><circle cx="12" cy="5" r="2.2" stroke="currentColor" strokeWidth="2.2"/><path d="M12 8 V15 M12 11 L7 13 M12 11 L17 13 M12 15 L9 21 M12 15 L15 21" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/></svg>
 }
 function Pill({ className = "" }: { className?: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" className={className}><rect x="3" y="9" width="18" height="6" rx="3" stroke="currentColor" strokeWidth="1.5" transform="rotate(45 12 12)"/><path d="M12 8 L16 12" stroke="currentColor" strokeWidth="1.5"/></svg>
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><rect x="3" y="9" width="18" height="6" rx="3" stroke="currentColor" strokeWidth="2.2" transform="rotate(45 12 12)"/><path d="M12 8 L16 12" stroke="currentColor" strokeWidth="2.2"/></svg>
 }
 function Shield({ className = "" }: { className?: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M12 2 L4 5 v6 c0 5 3.5 9 8 11 4.5 -2 8 -6 8 -11 V5 Z" stroke="currentColor" strokeWidth="1.5" strokeLinejoin="round"/><path d="M9 12 l2 2 l4 -4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/></svg>
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><path d="M12 2 L4 5 v6 c0 5 3.5 9 8 11 4.5 -2 8 -6 8 -11 V5 Z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round"/><path d="M9 12 l2 2 l4 -4" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"/></svg>
 }
 function Coins({ className = "" }: { className?: string }) {
-  return <svg viewBox="0 0 24 24" fill="none" className={className}><ellipse cx="9" cy="8" rx="6" ry="3" stroke="currentColor" strokeWidth="1.5"/><path d="M3 8 v4 c0 1.7 2.7 3 6 3 s6 -1.3 6 -3 v-4" stroke="currentColor" strokeWidth="1.5"/><ellipse cx="15" cy="14" rx="6" ry="3" stroke="currentColor" strokeWidth="1.5"/><path d="M9 14 v4 c0 1.7 2.7 3 6 3 s6 -1.3 6 -3 v-4" stroke="currentColor" strokeWidth="1.5"/></svg>
+  return <svg viewBox="0 0 24 24" fill="none" className={className}><ellipse cx="9" cy="8" rx="6" ry="3" stroke="currentColor" strokeWidth="2.2"/><path d="M3 8 v4 c0 1.7 2.7 3 6 3 s6 -1.3 6 -3 v-4" stroke="currentColor" strokeWidth="2.2"/><ellipse cx="15" cy="14" rx="6" ry="3" stroke="currentColor" strokeWidth="2.2"/><path d="M9 14 v4 c0 1.7 2.7 3 6 3 s6 -1.3 6 -3 v-4" stroke="currentColor" strokeWidth="2.2"/></svg>
 }
 
 const features = [

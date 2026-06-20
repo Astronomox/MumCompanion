@@ -5,6 +5,7 @@ import { ChatBubble, TypingIndicator } from "@/components/chat/ChatBubble"
 import { BottomNav } from "@/components/layout/BottomNav"
 import { EmergencyOverlay } from "@/components/emergency/EmergencyOverlay"
 import { sendChat, type ChatResponse } from "@/lib/api/client"
+import { persistMessage, loadChatHistory } from "@/lib/chatPersistence"
 import { useAppStore } from "@/lib/store"
 import { cn } from "@/lib/utils/cn"
 
@@ -75,7 +76,7 @@ function getGreeting(name: string, mode: Mode, language: Language): string {
 function SendIcon({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className}>
-      <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+      <path d="M22 2L11 13M22 2L15 22L11 13M22 2L2 9L11 13" stroke="currentColor" strokeWidth="2.3" strokeLinecap="round" strokeLinejoin="round"/>
     </svg>
   )
 }
@@ -83,8 +84,8 @@ function SendIcon({ className = "" }: { className?: string }) {
 function GlobeIcon({ className = "" }: { className?: string }) {
   return (
     <svg viewBox="0 0 24 24" fill="none" className={className}>
-      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="1.6"/>
-      <path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9M3 12h18" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round"/>
+      <circle cx="12" cy="12" r="9" stroke="currentColor" strokeWidth="2.2"/>
+      <path d="M12 3c-2.5 3-4 5.5-4 9s1.5 6 4 9M12 3c2.5 3 4 5.5 4 9s-1.5 6-4 9M3 12h18" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
     </svg>
   )
 }
@@ -99,6 +100,7 @@ export default function ChatPage() {
     (user?.preferredLanguage as Language) || "english"
   )
   const [showLangPicker, setShowLangPicker] = useState(false)
+  const [historyLoaded, setHistoryLoaded] = useState(false)
   const scrollRef = useRef<HTMLDivElement>(null)
 
   const userName = user?.name?.trim() || ""
@@ -109,17 +111,36 @@ export default function ChatPage() {
 
   useEffect(() => { scrollToBottom() }, [messages, isLoading, scrollToBottom])
 
-  // Greet on first load with proper name + language from store
+  // On mount, if local store has no messages, try loading saved history from Supabase
   useEffect(() => {
-    if (!greeted && messages.length === 0 && user) {
-      addMessage({
-        id: `bot-${Date.now()}`, role: "assistant",
+    if (historyLoaded) return
+    if (messages.length > 0) {
+      setHistoryLoaded(true)
+      setGreeted(true)
+      return
+    }
+    loadChatHistory().then((history) => {
+      if (history.length > 0) {
+        history.forEach((m) => addMessage(m))
+        setGreeted(true)
+      }
+      setHistoryLoaded(true)
+    })
+  }, [historyLoaded, messages.length, addMessage])
+
+  // Greet on first load with proper name + language from store - only after history check completes
+  useEffect(() => {
+    if (!greeted && historyLoaded && messages.length === 0 && user) {
+      const greetingMsg = {
+        id: `bot-${Date.now()}`, role: "assistant" as const,
         content: getGreeting(userName, "general", language),
         mode: "general", timestamp: new Date().toISOString(),
-      })
+      }
+      addMessage(greetingMsg)
+      persistMessage(greetingMsg)
       setGreeted(true)
     }
-  }, [greeted, messages.length, user, addMessage, language, userName])
+  }, [greeted, historyLoaded, messages.length, user, addMessage, language, userName])
 
   const handleModeChange = (mode: Mode) => {
     setChatMode(mode)
@@ -147,7 +168,9 @@ export default function ChatPage() {
 
   const send = async (text: string) => {
     if (!text.trim() || isLoading) return
-    addMessage({ id: `u-${Date.now()}`, role: "user", content: text.trim(), mode: chatMode, timestamp: new Date().toISOString() })
+    const userMsg = { id: `u-${Date.now()}`, role: "user" as const, content: text.trim(), mode: chatMode, timestamp: new Date().toISOString() }
+    addMessage(userMsg)
+    persistMessage(userMsg)
     setInput("")
     setIsLoading(true)
     try {
@@ -166,7 +189,9 @@ export default function ChatPage() {
         baby_name: user?.babyName || "",
         language,
       })
-      addMessage({ id: `bot-${Date.now()}`, role: "assistant", content: res.answer, tier: res.tier, mode: chatMode, timestamp: new Date().toISOString() })
+      const botMsg = { id: `bot-${Date.now()}`, role: "assistant" as const, content: res.answer, tier: res.tier, mode: chatMode, timestamp: new Date().toISOString() }
+      addMessage(botMsg)
+      persistMessage(botMsg)
       if (res.tier === "urgent") setSosOpen(true)
     } catch {
       addMessage({
@@ -247,7 +272,7 @@ export default function ChatPage() {
         </div>
       </header>
 
-      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 min-h-0"
+      <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 min-h-0 chat-bg-pattern"
         style={{ paddingBottom: showQuickPrompts ? "200px" : "150px" }}>
         {messages.map((msg) => (
           <ChatBubble key={msg.id} role={msg.role} content={msg.content}

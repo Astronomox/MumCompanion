@@ -59,8 +59,8 @@ export default function JourneyPage() {
         <div className="px-4 pt-12 text-center">
           <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-forest-100 flex items-center justify-center">
             <svg viewBox="0 0 24 24" fill="none" className="w-8 h-8 text-forest-600">
-              <rect x="4" y="5" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="1.7"/>
-              <path d="M4 10H20M8 3V7M16 3V7" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round"/>
+              <rect x="4" y="5" width="16" height="16" rx="3" stroke="currentColor" strokeWidth="2.2"/>
+              <path d="M4 10H20M8 3V7M16 3V7" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
             </svg>
           </div>
           <h2 className="font-display font-bold text-lg text-stone-800 mb-2">First, tell me your week</h2>
