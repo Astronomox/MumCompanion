@@ -1,20 +1,27 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, type CSSProperties } from "react"
 import { getStoredTheme, applyTheme, type Theme } from "@/lib/theme"
 
-function SunIcon({ className = "" }: { className?: string }) {
+function SunIcon({ className = "", style }: { className?: string; style?: CSSProperties }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className={className}>
-      <circle cx="12" cy="12" r="4.5" stroke="currentColor" strokeWidth="2.2"/>
-      <path d="M12 2.5v2.5M12 19v2.5M4.2 4.2l1.8 1.8M18 18l1.8 1.8M2.5 12H5M19 12h2.5M4.2 19.8l1.8-1.8M18 6l1.8-1.8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
+    <svg viewBox="0 0 24 24" fill="none" className={className} style={style}>
+      <circle cx="12" cy="12" r="4.2" stroke="currentColor" strokeWidth="2.2"/>
+      <path d="M12 2.5v2.8M12 18.7v2.8M4.6 4.6l2 2M17.4 17.4l2 2M2.5 12h2.8M18.7 12h2.8M4.6 19.4l2-2M17.4 6.6l2-2"
+        stroke="currentColor" strokeWidth="2.2" strokeLinecap="round"/>
     </svg>
   )
 }
-function MoonIcon({ className = "" }: { className?: string }) {
+
+function MoonIcon({ className = "", style }: { className?: string; style?: CSSProperties }) {
   return (
-    <svg viewBox="0 0 24 24" fill="none" className={className}>
-      <path d="M20 14.5A8.5 8.5 0 1 1 9.5 4 7 7 0 0 0 20 14.5Z" stroke="currentColor" strokeWidth="2.2" strokeLinejoin="round" fill="currentColor" fillOpacity="0.12"/>
+    <svg viewBox="0 0 24 24" fill="none" className={className} style={style}>
+      <path
+        d="M19.5 14.3c-1 .4-2.1.6-3.2.6-4.7 0-8.6-3.8-8.6-8.6 0-1.2.2-2.3.6-3.3-3.5 1.3-6 4.7-6 8.6 0 5.1 4.2 9.3 9.3 9.3 3.9 0 7.3-2.4 8.6-6-.2 0-.5-.1-.7-.6Z"
+        fill="currentColor" fillOpacity="0.18" stroke="currentColor" strokeWidth="2" strokeLinejoin="round"
+      />
+      <circle cx="15.5" cy="6.5" r="0.9" fill="currentColor" />
+      <circle cx="18" cy="10" r="0.6" fill="currentColor" />
     </svg>
   )
 }
