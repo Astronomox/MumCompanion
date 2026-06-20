@@ -69,6 +69,10 @@ module.exports = {
       borderRadius: {
         "2xl": "1rem",
       },
+      boxShadow: {
+        card: "0 1px 3px rgba(0,0,0,0.06), 0 4px 14px rgba(0,0,0,0.04)",
+        warm: "0 4px 14px rgba(33,99,48,0.18)",
+      },
       animation: {
         "pulse-soft": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "slide-up": "slideUp 0.3s ease-out",
